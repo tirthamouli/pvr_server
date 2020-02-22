@@ -5,10 +5,9 @@
 
 const { Model, DataTypes, Deferrable } = require("sequelize")
 
-/**
- * User Model
- */
-class User extends Model { }
+// Exceptions
+const InternalServer = require("../exception/internalServerException")
+
 
 /**
  * 
@@ -16,6 +15,45 @@ class User extends Model { }
  * @param {Model} City 
  */
 function init({ sequelize, City }) {
+    /**
+     * User Model
+     */
+    class User extends Model {
+        /**
+         * Check if email exists
+         * @param {String} email 
+         */
+        static async checkIfEmailExists({ email }) {
+            try {
+                // Step 1: Check if user with the email exists
+                const user = await User.findOne({
+                    attributes: ["id"],
+                    where: {
+                        email: {
+                            [Op.eq]: email
+                        }
+                    }
+                })
+                if (user !== null) {
+                    return "EMAIL_EXISTS"
+                }
+
+                // Return false as user doesn't exist
+                return false
+            } catch (err) {
+                throw new InternalServer(err)
+            }
+        }
+
+        /**
+         * Check if the city exists
+         * @param {String} cityId 
+         */
+        async checkIfCityExists({ cityId }) {
+            return await City.checkIfCityExists({ cityId })
+        }
+    }
+
     // Step 1: Defining the schema and options
     User.init({
         /**

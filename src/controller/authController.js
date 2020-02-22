@@ -89,3 +89,5 @@ class AuthController {
         res.send(response)
     }
 }
+
+module.exports = AuthController

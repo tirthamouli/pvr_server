@@ -3,7 +3,7 @@
  * Author: Tirthamouli Baidya
  */
 
-const { Model, DataTypes, Deferrable } = require("sequelize")
+const { Model, DataTypes, Deferrable, Op } = require("sequelize")
 
 // Exceptions
 const InternalServer = require("../exception/internalServerException")
@@ -69,10 +69,39 @@ function init({ sequelize, User }) {
          */
         static async checkIfUserExists({ email, username }) {
             try {
+                // Step 1: Check if user with username exists
+                const auth = await Auth.findOne({
+                    attributes: ["id"],
+                    where: {
+                        username: {
+                            [Op.eq]: username
+                        }
+                    }
+                })
+                if (auth !== null) {
+                    return "USERNAME_EXISTS"
+                }
 
+                // Step 2: Check if user with the email exists
+                const exists = User.checkIfEmailExists({ email: email })
+                if (!exists) {
+                    return exists
+                }
+
+                // Step 3: Return false if both username and email are available
+                return false
             } catch (err) {
+                // Step 1: Throw error if any error occurs
                 throw new InternalServer(err)
             }
+        }
+
+        /**
+         * Check if the city exists
+         * @param {String} cityId 
+         */
+        async checkIfCityExists({ cityId }) {
+            return await User.checkIfCityExists({ cityId })
         }
     }
 

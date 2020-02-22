@@ -1,21 +1,25 @@
-const validationHelper = require("../helper/validationHelper")
-
 /**
  * Authentication service
  * Author: Tirthamouli Baidya
  */
 
+// Validation helper
+const validationHelper = require("../helper/validationHelper")
+
+// Exception
+const BadRequest = require("../exception/badRequestException")
+
 class AuthService {
     /**
      * Dependency injection
-     * @param {Model} authModel 
+     * @param {Model} AuthModel 
      */
-    constructor({ authModel }) {
-        this.authModel = authModel
+    constructor({ AuthModel }) {
+        this.AuthModel = AuthModel
     }
 
     /**
-     * 
+     * Register a new user
      * @param {String} firstName
      * @param {String} lastName
      * @param {String} email
@@ -23,7 +27,7 @@ class AuthService {
      * @param {String} password
      * @param {String} repeatPassword
      */
-    async register({ firstName, lastName, email, username, password, repeatPassword }) {
+    async register({ firstName, lastName, email, username, password, repeatPassword, cityId }) {
         // Step 1: Validate and format
         const firstNameV = validationHelper.name(firstName)
         const lastNameV = validationHelper.name(lastName)
@@ -32,6 +36,27 @@ class AuthService {
         const passwordV = await validationHelper.password(password, repeatPassword)
 
         // Step 2: Check if username or email exists
+        const usernameOrEmailExists = await this.AuthModel.checkIfUserExists({ email: emailV, username: usernameV })
+        if (usernameOrEmailExists !== false) {
+            throw new BadRequest(usernameOrEmailExists)
+        }
+
+        // Step 3: Check if cityId is correct
+        const cityExisits = await this.AuthModel.checkIfCityExists({ cityId: cityId })
+        if (!cityExisits) {
+            throw new BadRequest("city doesn't exist")
+        }
+
+
+        // Step 4: Create new user
+        const user = this.AuthModel.createNewUser({
+            firstName: firstNameV,
+            lastName: lastNameV,
+            email: emailV,
+            cityId: cityId,
+            username: usernameV,
+            password: passwordV
+        })
     }
 }
 

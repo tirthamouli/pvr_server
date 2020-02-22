@@ -1,4 +1,4 @@
-const { Sequelize } = require('sequelize')
+const { Sequelize, Op } = require('sequelize')
 const cityInit = require("./cityModel")
 const userInit = require("./userModel")
 const theatreInit = require("./theatreModel")
@@ -24,12 +24,20 @@ const Auth = authInit({ sequelize, User })
 const Movie = movieInit({ sequelize, Theatre })
 
 
-// async function callm() {
-//     const res = await City.searchCityByName({ limit: 1, name: "va" })
-//     console.log(res)
-// }
+async function callm() {
+    // const res = await City.searchCityByName({ limit: 1, name: "va" })
+    const rese = await City.findOne({
+        attributes: ['id'],
+        where: {
+            id: {
+                [Op.eq]: "33"
+            }
+        }
+    })
+    console.log(rese === null)
+}
 
-// callm()
+callm()
 
 
 // sequelize.sync({ force: true, logging: console.log }).then(async () => {
