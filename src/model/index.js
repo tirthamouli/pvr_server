@@ -26,8 +26,18 @@ const Movie = movieInit({ sequelize, Theatre })
 
 async function callm() {
     // const res = await City.searchCityByName({ limit: 1, name: "va" })
-    const rese = await City.findByPk("007741c3-318d-4ba7-a37a-7416ad41d9d1")
-    console.log(rese)
+    const user = await Auth.findOne({
+        attributes: ['id', 'password'],
+        include: [{
+            model: User,
+            attributes: ['firstName', 'lastName', 'email']
+        }],
+        where: {
+            username: {
+                [Op.eq]: 'boom'
+            }
+        }
+    })
 }
 
 callm()
@@ -41,7 +51,7 @@ callm()
 //     })
 //     for (let i = 0; i < allCityObject.length; i++) {
 //         City.create(allCityObject[i]).then((res) => {
-//             console.log(res)
+
 //         })
 //     }
 

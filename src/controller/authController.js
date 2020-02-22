@@ -1,4 +1,5 @@
 /**
+ * Auth controller
  * Author: Tirthamouli Baidya
  */
 
@@ -69,7 +70,7 @@ class AuthController {
             // Step 2.1: Check if we have the correct request format
             if (!bulkCheckHasOwnProperty({
                 obj: req.body,
-                propArray: ['firstName', 'lastName', 'email', 'username', 'password', 'repeatPassword']
+                propArray: ['firstName', 'lastName', 'email', 'username', 'password', 'repeatPassword', 'cityId']
             })) {
                 throw new BadRequest("bad request")
             }
@@ -87,6 +88,16 @@ class AuthController {
 
         // Step 3: Send the response
         res.send(response)
+    }
+
+    /**
+     * Verification controller
+     * @param {Object} req 
+     * @param {Object} res 
+     */
+    async verify(req, res) {
+        // Step 1: Since verification is done by middleware, we can directly access the user
+        res.json(req.user)
     }
 }
 

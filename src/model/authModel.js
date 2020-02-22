@@ -45,7 +45,7 @@ function init({ sequelize, User }) {
                 const auth = await Auth.create({
                     username,
                     password,
-                    userId: user.dataValues.id
+                    userId: user.id
                 })
 
                 // Step 2.3: Commit
@@ -104,6 +104,34 @@ function init({ sequelize, User }) {
         static async checkIfCityExists({ cityId }) {
             return await User.checkIfCityExists({ cityId })
         }
+
+        /**
+         * Get user by username
+         * @param {String} username 
+         */
+        static async getUserByUsername({ username }) {
+            try {
+                // Step 1: Get the user details
+                const user = await Auth.findOne({
+                    attributes: ['id', 'password'],
+                    include: [{
+                        model: User,
+                        attributes: ['firstName', 'lastName', 'email']
+                    }],
+                    where: {
+                        username: {
+                            [Op.eq]: username
+                        }
+                    }
+                })
+
+                // Step 2: Return the user
+                return user
+            } catch (err) {
+                // Step 1: Throw err if any
+                throw new InternalServer("unable to get user from username")
+            }
+        }
     }
 
     // Step 1: Defining the schema and options
@@ -130,18 +158,6 @@ function init({ sequelize, User }) {
         password: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        /**
-         * userId - Reference to the user
-         */
-        userId: {
-            type: DataTypes.UUID,
-            references: {
-                model: User,
-                key: 'id',
-                deferrable: Deferrable.INITIALLY_IMMEDIATE
-            },
-            onDelete: "CASCADE"
         }
     }, {
         sequelize,
@@ -150,6 +166,9 @@ function init({ sequelize, User }) {
         createdAt: 'created', // Created column
         updatedAt: 'updated' // Updated column
     })
+
+    // Step 2: Defining associations
+    Auth.belongsTo(User, { foreignKey: 'userId' })
 
     // Step 2: Return the class
     return Auth

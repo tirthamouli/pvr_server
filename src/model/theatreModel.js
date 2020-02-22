@@ -32,18 +32,6 @@ function init({ sequelize, City }) {
         name: {
             type: DataTypes.STRING,
             allowNull: false
-        },
-        /**
-         * cityId - Reference to the city of the theatre
-         */
-        cityId: {
-            type: DataTypes.UUID,
-            references: {
-                model: City,
-                key: 'id',
-                deferrable: Deferrable.INITIALLY_IMMEDIATE
-            },
-            onDelete: "CASCADE"
         }
     }, {
         sequelize,
@@ -53,7 +41,10 @@ function init({ sequelize, City }) {
         updatedAt: 'updated' // Updated column
     })
 
-    // Step 2: Return the class
+    // Step 2: Defining associations
+    City.hasMany(Theatre, { foreignKey: 'cityId' })
+
+    // Step 3: Return the class
     return Theatre
 }
 

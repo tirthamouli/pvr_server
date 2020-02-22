@@ -80,6 +80,7 @@ function init({ sequelize, Theatre }) {
 
     // Step 3: Define association
     Movie.belongsToMany(Theatre, { through: Show })
+    Theatre.belongsToMany(Movie, { through: Show })
 
     // Step 4: Return the class
     return Movie

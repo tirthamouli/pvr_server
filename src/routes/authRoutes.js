@@ -7,6 +7,9 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const router = express.Router()
 
+// Authentication middleware
+const verifyToken = require("../middleware/verifyAuthMiddleware")
+
 // Getting auth controller from the controller factory
 const authController =
     require('../factory/controllerFactory').authController
@@ -28,10 +31,10 @@ router.post('/register',
     authController.register.bind(authController)
 )
 
-// /**
-//  * Verify if the user is authentic
-//  */
-// router.get('/verify',
-//     authController.verify.bind(authController)
-// )
+/**
+ * Verify if the user is authentic
+ */
+router.get('/verify', verifyToken,
+    authController.verify.bind(authController)
+)
 module.exports = router
