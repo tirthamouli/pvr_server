@@ -6,21 +6,70 @@
 const { Model, DataTypes } = require("sequelize")
 
 /**
- * Movie Model
- */
-class Movie extends Model { }
-
-/**
- * Show Model - pivot table
- */
-class Show extends Model { }
-
-/**
  * 
  * @param {Object} sequelize 
  * @param {Model} Theatre 
  */
 function init({ sequelize, Theatre }) {
+    /**
+     * Movie Model
+     */
+    class Movie extends Model {
+        /**
+         * Check if theatre exists
+         * @param {String} theatreId 
+         */
+        static async checkIfTheatreExists({ theatreId }) {
+            return await Theatre.checkIfTheatreExists({ theatreId })
+        }
+
+        /**
+         * Add a new movie
+         * @param {String} name
+         * @param {String} startsAt
+         * @param {String} endsAt
+         * @param {String} theatreId
+         */
+        static async addNewMovie({ name, startsAt, endsAt, theatreId }) {
+            // Step 1: Start transaction
+            const t = await sequelize.transaction()
+
+            // Step 2: Run create queries
+            try {
+                // Step 2.1: Create new movie
+                const movie = await Movie.create({
+                    name
+                })
+
+                // Step 2.2: Create new show
+                const show = await Show.create({
+                    startsAt,
+                    endsAt,
+                    MovieId: movie.id,
+                    TheatreId: theatreId
+                })
+
+                // Step 2.3: Commit
+                await t.commit()
+
+                // Step 2.4: Return the show
+                return show
+            } catch (err) {
+                console.log(err)
+                // Step 2.1: Rollback incase of error
+                await t.rollback()
+
+                // Step 2.2: Throw error
+                throw new InternalServer("unable to create new movie")
+            }
+        }
+    }
+
+    /**
+     * Show Model - pivot table
+     */
+    class Show extends Model { }
+
     // Step 1: Defining the schema and options
     Movie.init({
         /**

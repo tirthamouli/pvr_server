@@ -6,16 +6,41 @@
 const { Model, DataTypes, Deferrable } = require("sequelize")
 
 /**
- * Theatre Model
- */
-class Theatre extends Model { }
-
-/**
  * 
  * @param {Object} sequelize 
  * @param {Model} City 
  */
 function init({ sequelize, City }) {
+    /**
+     * Theatre Model
+     */
+    class Theatre extends Model {
+        /**
+         * Check if the city exists
+         * @param {String} cityId 
+         */
+        static async checkIfCityExists({ cityId }) {
+            return await City.checkIfCityExists({ cityId })
+        }
+
+        /**
+         * Check if theatre exists
+         * @param {String} theatreId 
+         */
+        static async checkIfTheatreExists({ theatreId }) {
+            // Step 1: Find using theatre id
+            const theatre = await Theatre.findByPk(theatreId)
+
+            // Step 2: Check if theatre exists
+            if (theatre !== null) {
+                return "THEATRE_EXISTS"
+            }
+
+            // Step 3: Return false because theatre doesn't exist
+            return false
+        }
+    }
+
     // Step 1: Defining the schema and options
     Theatre.init({
         /**

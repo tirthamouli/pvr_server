@@ -6,11 +6,21 @@
 const { hash } = require('./bcryptHelper')
 
 /**
+ * First need to create a formatting function to pad numbers to two digits for datetime conversion
+ **/
+function twoDigits(d) {
+    if (0 <= d && d < 10) return "0" + d.toString();
+    if (-10 < d && d < 0) return "-0" + (-1 * d).toString();
+    return d.toString();
+}
+
+/**
  * Regex patterns for validation
  */
 const patterns = {
     name: /^[a-z]{3,}$/i,
-    username: /^[a-z0-9_]{3,}$/,
+    username: /^[a-z0-9_]{3,}$/i,
+    theatreName: /^[a-z0-9_+\- ]+$/i,
     email: /^([a-z0-9\.-_%+]+)@([a-z0-9-]+)\.([a-z]{2,10})(\.[a-z]{2,5})?$/i,
     password: /^(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).*$/
 }
@@ -34,6 +44,13 @@ module.exports = {
         return this.simpleString(value) && patterns.name.test(value.trim()) ? value.trim() : false
     },
     /**
+     * Check if theatre name is valid
+     * @param {String} value 
+     */
+    movieOrTheatreName(value) {
+        return this.simpleString(value) && patterns.theatreName.test(value.trim()) ? value.trim() : false
+    },
+    /**
      * Sanitize and format an username
      * @param {String} value 
      */
@@ -46,6 +63,23 @@ module.exports = {
      */
     email(value) {
         return this.simpleString(value) && patterns.email.test(value.trim()) ? value.trim() : false
+    },
+    /**
+     * Converts jsDate to myslq date
+     * @param {String} jsDate 
+     */
+    dateToMysqlFormat(jsDate) {
+        // Step 1: Get JS Date
+        const date = new Date(jsDate)
+
+        // Step 2: Check if date is valid
+        if (isNaN(date.getTime())) {
+            // Date is invalid
+            return false
+        }
+
+        // Step 3: Convert to mysql date
+        return date.getUTCFullYear() + "-" + twoDigits(1 + date.getUTCMonth()) + "-" + twoDigits(date.getUTCDate()) + " " + twoDigits(date.getUTCHours()) + ":" + twoDigits(date.getUTCMinutes()) + ":" + twoDigits(date.getUTCSeconds());
     },
     /**
      * Sanitize and format password
@@ -68,12 +102,5 @@ module.exports = {
 
         // Step 4: Return hash
         return hashedPassword
-    },
-    /**
-     * Sanitize and format an integer
-     * @param {Number} value
-     */
-    integer(value) {
-        return isNaN(value) ? false : parseInt(value)
-    },
+    }
 }

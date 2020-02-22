@@ -62,7 +62,8 @@ class UserService {
             id: user.id,
             firstName: firstNameV,
             lastName: lastNameV,
-            email: emailV
+            email: emailV,
+            message: "user created successfully"
         }
     }
 }
