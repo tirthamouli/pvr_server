@@ -5,10 +5,8 @@
 
 const { Model, DataTypes, Deferrable } = require("sequelize")
 
-/**
- * Auth Model
- */
-class Auth extends Model { }
+// Exceptions
+const InternalServer = require("../exception/internalServerException")
 
 /**
  * 
@@ -16,6 +14,68 @@ class Auth extends Model { }
  * @param {Model} User 
  */
 function init({ sequelize, User }) {
+    /**
+     * Auth Model
+     */
+    class Auth extends Model {
+        /**
+         * Register a new user
+         * @param {String} firstName
+         * @param {String} lastName
+         * @param {String} email
+         * @param {String} username
+         * @param {String} password
+         * @param {String} cityId
+         */
+        static async createNewUser({ firstName, lastName, email, cityId, username, password, }) {
+            // Step 1: Start transaction
+            const t = await sequelize.transaction()
+
+            // Step 2: Run create queries
+            try {
+                // Step 2.1: Create new user
+                const user = await User.create({
+                    firstName,
+                    lastName,
+                    email,
+                    cityId
+                })
+
+                // Step 2.2: Create new authentication
+                const auth = new Auth({
+                    username,
+                    password,
+                    userId: user
+                })
+
+                // Step 2.3: Commit
+                await t.commit()
+
+                // Step 2.4: Return the user
+                return auth
+            } catch (err) {
+                // Step 2.1: Rollback incase of error
+                await t.rollback()
+
+                // Step 2.2: Throw error
+                throw new InternalServer(err)
+            }
+        }
+
+        /**
+         * Check if user name or the email exists
+         * @param {String} email
+         * @param {String} username
+         */
+        static async checkIfUserExists({ email, username }) {
+            try {
+
+            } catch (err) {
+                throw new InternalServer(err)
+            }
+        }
+    }
+
     // Step 1: Defining the schema and options
     Auth.init({
         /**
@@ -42,9 +102,9 @@ function init({ sequelize, User }) {
             allowNull: false
         },
         /**
-         * user_id - Reference to the user
+         * userId - Reference to the user
          */
-        user_id: {
+        userId: {
             type: DataTypes.UUID,
             references: {
                 model: User,

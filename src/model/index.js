@@ -24,25 +24,25 @@ const Auth = authInit({ sequelize, User })
 const Movie = movieInit({ sequelize, Theatre })
 
 
-async function callm() {
-    const res = await City.searchCityByName({ limit: 30, name: "va" })
-    console.log(res)
-}
+// async function callm() {
+//     const res = await City.searchCityByName({ limit: 1, name: "va" })
+//     console.log(res)
+// }
 
-callm()
+// callm()
 
 
-// sequelize.sync({ alter: true, logging: console.log }).then(async () => {
-//     // const allCityObject = allCities.map(city => {
-//     //     return {
-//     //         name: city
-//     //     }
-//     // })
-//     // for (let i = 0; i < allCityObject.length; i++) {
-//     //     City.create(allCityObject[i]).then((res) => {
-//     //         console.log(res)
-//     //     })
-//     // }
+// sequelize.sync({ force: true, logging: console.log }).then(async () => {
+//     const allCityObject = allCities.map(city => {
+//         return {
+//             name: city
+//         }
+//     })
+//     for (let i = 0; i < allCityObject.length; i++) {
+//         City.create(allCityObject[i]).then((res) => {
+//             console.log(res)
+//         })
+//     }
 
 // }).catch((err) => {
 //     console.log(err)

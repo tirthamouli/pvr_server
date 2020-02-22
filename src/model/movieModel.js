@@ -59,14 +59,14 @@ function init({ sequelize, Theatre }) {
         /**
          * start - Start date of the movie
          */
-        starts_at: {
+        startsAt: {
             type: DataTypes.DATE,
             allowNull: false
         },
         /**
          * end - End date of the movie
          */
-        ends_at: {
+        endsAt: {
             type: DataTypes.DATE,
             allowNull: false
         }

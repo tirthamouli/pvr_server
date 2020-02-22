@@ -34,9 +34,9 @@ function init({ sequelize, City }) {
             allowNull: false
         },
         /**
-         * city_id - Reference to the city of the theatre
+         * cityId - Reference to the city of the theatre
          */
-        city_id: {
+        cityId: {
             type: DataTypes.UUID,
             references: {
                 model: City,

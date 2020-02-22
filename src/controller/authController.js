@@ -41,7 +41,7 @@ class AuthController {
             }
 
             // Step 2.2: Pass the request to auth service
-            response = await this.authService.login(req)
+            response = await this.authService.login(req.body)
 
             // Step 2.3: Set the status code
             response.code = 200
@@ -69,13 +69,13 @@ class AuthController {
             // Step 2.1: Check if we have the correct request format
             if (!bulkCheckHasOwnProperty({
                 obj: req.body,
-                propArray: ['firstName', 'lastName', 'username', 'password', 'repeatPassword']
+                propArray: ['firstName', 'lastName', 'email', 'username', 'password', 'repeatPassword']
             })) {
                 throw new BadRequest("bad request")
             }
 
             // Step 2.2: Pass the request to auth service
-            response = await this.authService.register(req)
+            response = await this.authService.register(req.body)
 
             // Step 2.3: Set the status code
             response.code = 200
