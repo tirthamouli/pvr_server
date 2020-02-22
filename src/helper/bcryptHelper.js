@@ -11,16 +11,16 @@ const InternalServer = require("../exception/internalServerException")
  */
 function hash(password) {
     // Step 1: Create a promise wrapper
-    return new Promise(resolve, reject => {
+    return new Promise((resolve, reject) => {
         // Step 2: Hash the password
-        bcrypt.hash(password, process.env.BCRYPT_SALT_ROUNDS, function (err, hash) {
+        bcrypt.hash(password, +process.env.BCRYPT_SALT_ROUNDS, function (err, hashedPassword) {
             // Step 3: Incase of any error, throw a new error
             if (err) {
                 return reject(new InternalServer("error during hash"))
             }
 
             // Step 4: Resolve when there is no error
-            resolve(hash)
+            resolve(hashedPassword)
         })
     })
 }

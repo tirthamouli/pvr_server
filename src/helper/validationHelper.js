@@ -10,7 +10,7 @@ const { hash } = require('./bcryptHelper')
  */
 const patterns = {
     name: /^[a-z]{3,}$/i,
-    username: /^[a-z0-9_]$/,
+    username: /^[a-z0-9_]{3,}$/,
     email: /^([a-z0-9\.-_%+]+)@([a-z0-9-]+)\.([a-z]{2,10})(\.[a-z]{2,5})?$/i,
     password: /^(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).*$/
 }
@@ -64,10 +64,10 @@ module.exports = {
         }
 
         // Step 3: Hash the password
-        const hash = await hash(password)
+        const hashedPassword = await hash(password)
 
         // Step 4: Return hash
-        return hash
+        return hashedPassword
     },
     /**
      * Sanitize and format an integer

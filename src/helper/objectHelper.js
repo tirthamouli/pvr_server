@@ -1,3 +1,8 @@
+/**
+ * Object helper
+ * Author: Tirthamouli Baidya
+ */
+
 module.exports = {
     /**
      * Check if the given properties are in the array

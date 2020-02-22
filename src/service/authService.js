@@ -9,6 +9,9 @@ const validationHelper = require("../helper/validationHelper")
 // Exception
 const BadRequest = require("../exception/badRequestException")
 
+// JWT helper
+const { sign } = require("../helper/jwtHelper")
+
 class AuthService {
     /**
      * Dependency injection
@@ -34,6 +37,10 @@ class AuthService {
         const emailV = validationHelper.email(email)
         const usernameV = validationHelper.username(username)
         const passwordV = await validationHelper.password(password, repeatPassword)
+        if (!firstNameV || !lastNameV || !emailV || !usernameV || !passwordV || cityId === undefined) {
+            throw new BadRequest("invalid data")
+        }
+
 
         // Step 2: Check if username or email exists
         const usernameOrEmailExists = await this.AuthModel.checkIfUserExists({ email: emailV, username: usernameV })
@@ -42,14 +49,14 @@ class AuthService {
         }
 
         // Step 3: Check if cityId is correct
-        const cityExisits = await this.AuthModel.checkIfCityExists({ cityId: cityId })
+        const cityExisits = await this.AuthModel.checkIfCityExists({ cityId })
         if (!cityExisits) {
             throw new BadRequest("city doesn't exist")
         }
 
 
         // Step 4: Create new user
-        const user = this.AuthModel.createNewUser({
+        const user = await this.AuthModel.createNewUser({
             firstName: firstNameV,
             lastName: lastNameV,
             email: emailV,
@@ -57,6 +64,19 @@ class AuthService {
             username: usernameV,
             password: passwordV
         })
+
+        // Step 5: Create new JWT token
+        const token = await sign({
+            id: user.dataValues.id,
+            email: emailV,
+            username: usernameV
+        })
+
+        // Step 6: Return the response
+        return {
+            token,
+            message: 'registration successfull'
+        }
     }
 }
 

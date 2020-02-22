@@ -3,7 +3,7 @@
  * Author: Tirthamouli Baidya
  */
 
-const { Model, DataTypes, Deferrable } = require("sequelize")
+const { Model, DataTypes, Deferrable, Op } = require("sequelize")
 
 // Exceptions
 const InternalServer = require("../exception/internalServerException")
@@ -41,7 +41,7 @@ function init({ sequelize, City }) {
                 // Return false as user doesn't exist
                 return false
             } catch (err) {
-                throw new InternalServer(err)
+                throw new InternalServer("unable to check if email exists")
             }
         }
 
@@ -49,7 +49,7 @@ function init({ sequelize, City }) {
          * Check if the city exists
          * @param {String} cityId 
          */
-        async checkIfCityExists({ cityId }) {
+        static async checkIfCityExists({ cityId }) {
             return await City.checkIfCityExists({ cityId })
         }
     }

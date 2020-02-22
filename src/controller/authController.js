@@ -48,7 +48,7 @@ class AuthController {
             res.status(200)
         } catch (error) {
             // Step 2.1: Handle the error in case of error
-            response = handleError(error, res)
+            return handleError(error, res)
         }
 
         // Step 3: Send the response
@@ -82,7 +82,7 @@ class AuthController {
             res.status(200)
         } catch (error) {
             // Step 2.1: Handle the error in case of error
-            response = handleError(error, res)
+            return handleError(error, res)
         }
 
         // Step 3: Send the response

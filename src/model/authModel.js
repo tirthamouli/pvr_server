@@ -42,10 +42,10 @@ function init({ sequelize, User }) {
                 })
 
                 // Step 2.2: Create new authentication
-                const auth = new Auth({
+                const auth = await Auth.create({
                     username,
                     password,
-                    userId: user
+                    userId: user.dataValues.id
                 })
 
                 // Step 2.3: Commit
@@ -54,11 +54,12 @@ function init({ sequelize, User }) {
                 // Step 2.4: Return the user
                 return auth
             } catch (err) {
+                console.log(err)
                 // Step 2.1: Rollback incase of error
                 await t.rollback()
 
                 // Step 2.2: Throw error
-                throw new InternalServer(err)
+                throw new InternalServer("unable to create new user")
             }
         }
 
@@ -83,8 +84,8 @@ function init({ sequelize, User }) {
                 }
 
                 // Step 2: Check if user with the email exists
-                const exists = User.checkIfEmailExists({ email: email })
-                if (!exists) {
+                const exists = await User.checkIfEmailExists({ email: email })
+                if (exists) {
                     return exists
                 }
 
@@ -92,7 +93,7 @@ function init({ sequelize, User }) {
                 return false
             } catch (err) {
                 // Step 1: Throw error if any error occurs
-                throw new InternalServer(err)
+                throw new InternalServer("unable to check if user exists")
             }
         }
 
@@ -100,7 +101,7 @@ function init({ sequelize, User }) {
          * Check if the city exists
          * @param {String} cityId 
          */
-        async checkIfCityExists({ cityId }) {
+        static async checkIfCityExists({ cityId }) {
             return await User.checkIfCityExists({ cityId })
         }
     }

@@ -41,7 +41,7 @@ function init({ sequelize }) {
          * Check if the city exists
          * @param {String} cityId 
          */
-        async checkIfCityExists({ cityId }) {
+        static async checkIfCityExists({ cityId }) {
             // Step 1: Find using city id
             const city = await City.findByPk(cityId)
 

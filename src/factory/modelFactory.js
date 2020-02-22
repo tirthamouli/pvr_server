@@ -10,15 +10,14 @@ const theatreInit = require("../model/theatreModel")
 const authInit = require("../model/authModel")
 const movieInit = require("../model/movieModel")
 
-
 // Creating a new sequalize pool connection
 const sequelize = new Sequelize(process.env.DATABASE_DATABASE, process.env.DATABASE_USER, process.env.DATABASE_PASSWORD, {
     host: process.env.DATABASE_HOST,
     dialect: 'mysql',
     pool: {
-        max: process.env.DATABASE_MAX_CONNECTION,
-        min: process.env.DATABASE_MIN_CONNECTION,
-        idle: process.env.DATABASE_CONNECTION_IDLE_TIME * 1000
+        max: +process.env.DATABASE_MAX_CONNECTION,
+        min: +process.env.DATABASE_MIN_CONNECTION,
+        idle: +process.env.DATABASE_CONNECTION_IDLE_TIME * 1000
     }
 })
 

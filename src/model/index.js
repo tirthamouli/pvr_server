@@ -26,15 +26,8 @@ const Movie = movieInit({ sequelize, Theatre })
 
 async function callm() {
     // const res = await City.searchCityByName({ limit: 1, name: "va" })
-    const rese = await City.findOne({
-        attributes: ['id'],
-        where: {
-            id: {
-                [Op.eq]: "33"
-            }
-        }
-    })
-    console.log(rese === null)
+    const rese = await City.findByPk("007741c3-318d-4ba7-a37a-7416ad41d9d1")
+    console.log(rese)
 }
 
 callm()

@@ -21,12 +21,12 @@ router.post('/login',
     authController.login.bind(authController)
 )
 
-// /**
-//  * Register a new user
-//  */
-// router.post('/register',
-//     authController.register.bind(authController)
-// )
+/**
+ * Register a new user
+ */
+router.post('/register',
+    authController.register.bind(authController)
+)
 
 // /**
 //  * Verify if the user is authentic
@@ -34,4 +34,4 @@ router.post('/login',
 // router.get('/verify',
 //     authController.verify.bind(authController)
 // )
-
+module.exports = router
