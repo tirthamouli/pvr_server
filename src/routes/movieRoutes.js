@@ -1,5 +1,5 @@
 /**
- * Handling user routes here
+ * Handling movie routes here
  * Author: Tirthamouli Baidya
  */
 
@@ -10,9 +10,9 @@ const router = express.Router()
 // Authentication middleware
 const verifyToken = require("../middleware/verifyAuthMiddleware")
 
-// Getting user controller from the controller factory
-const userController =
-    require('../factory/controllerFactory').userController
+// Getting movie controller from the controller factory
+const movieController =
+    require('../factory/controllerFactory').movieController
 
 // Using middlewares - json parser, verifyToken
 router.use(bodyParser.json())
@@ -21,8 +21,8 @@ router.use(verifyToken)
 /**
  * Login route
  */
-router.post('/create',
-    userController.create.bind(userController)
+router.post('/add',
+    movieController.add.bind(movieController)
 )
 
 module.exports = router

@@ -100,7 +100,6 @@ class AuthService {
         }
 
         // Step 3: Verify password
-        console.log(user.password)
         const passwordVerification = await compare(password, user.password)
         if (!passwordVerification) {
             throw new Forbidden('incorrect password')

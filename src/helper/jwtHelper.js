@@ -47,7 +47,6 @@ function verify(token) {
             }
 
             // Step 4: Resolve the data
-            console.log(authData)
             resolve(authData)
         })
     })

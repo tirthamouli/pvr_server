@@ -54,7 +54,6 @@ function init({ sequelize, User }) {
                 // Step 2.4: Return the user
                 return auth
             } catch (err) {
-                console.log(err)
                 // Step 2.1: Rollback incase of error
                 await t.rollback()
 

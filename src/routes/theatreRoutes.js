@@ -1,5 +1,5 @@
 /**
- * Handling user routes here
+ * Handling theatre routes here
  * Author: Tirthamouli Baidya
  */
 
@@ -10,9 +10,9 @@ const router = express.Router()
 // Authentication middleware
 const verifyToken = require("../middleware/verifyAuthMiddleware")
 
-// Getting user controller from the controller factory
-const userController =
-    require('../factory/controllerFactory').userController
+// Getting theatre controller from the controller factory
+const theatreController =
+    require('../factory/controllerFactory').theatreController
 
 // Using middlewares - json parser, verifyToken
 router.use(bodyParser.json())
@@ -21,8 +21,8 @@ router.use(verifyToken)
 /**
  * Login route
  */
-router.post('/create',
-    userController.create.bind(userController)
+router.post('/add',
+    theatreController.add.bind(theatreController)
 )
 
 module.exports = router

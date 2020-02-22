@@ -55,7 +55,6 @@ function init({ sequelize, Theatre }) {
                 // Step 2.4: Return the show
                 return show
             } catch (err) {
-                console.log(err)
                 // Step 2.1: Rollback incase of error
                 await t.rollback()
 
