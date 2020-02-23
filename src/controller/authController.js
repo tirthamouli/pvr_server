@@ -97,7 +97,8 @@ class AuthController {
      */
     async verify(req, res) {
         // Step 1: Since verification is done by middleware, we can directly access the user
-        res.json(req.user)
+        res.status(200)
+        res.json({ ...req.user, code: 200 })
     }
 }
 

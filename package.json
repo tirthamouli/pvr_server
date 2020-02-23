@@ -7,7 +7,7 @@
   "author": "Tirthamouli",
   "license": "MIT",
   "scripts": {
-    "create_migration": "db-migrate create"
+    "lint": "eslint"
   },
   "dependencies": {
     "bcrypt": "^4.0.0",
