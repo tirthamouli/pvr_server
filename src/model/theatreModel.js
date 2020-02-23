@@ -3,7 +3,7 @@
  * Author: Tirthamouli Baidya
  */
 
-const { Model, DataTypes, Deferrable } = require("sequelize")
+const { Model, DataTypes, Op } = require("sequelize")
 
 /**
  * 
@@ -27,12 +27,19 @@ function init({ sequelize, City }) {
          * Check if theatre exists
          * @param {String} theatreId 
          */
-        static async checkIfTheatreExists({ theatreId }) {
+        static async checkIfTheatresExists(theatres) {
             // Step 1: Find using theatre id
-            const theatre = await Theatre.findByPk(theatreId)
+            const theatreRes = await Theatre.findAll({
+                attributes: ['id'],
+                where: {
+                    id: {
+                        [Op.in]: theatres
+                    }
+                }
+            })
 
             // Step 2: Check if theatre exists
-            if (theatre !== null) {
+            if (theatreRes.length === theatres.length) {
                 return "THEATRE_EXISTS"
             }
 

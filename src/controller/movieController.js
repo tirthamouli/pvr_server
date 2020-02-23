@@ -33,7 +33,7 @@ class MovieController {
             // Step 2.1: Check if we have the correct request format
             if (!bulkCheckHasOwnProperty({
                 obj: req.body,
-                propArray: ['name', 'start', 'end', 'theatreId']
+                propArray: ['name', 'description', 'shows']
             })) {
                 throw new BadRequest("bad request")
             }

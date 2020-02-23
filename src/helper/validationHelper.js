@@ -5,6 +5,9 @@
 
 const { hash } = require('./bcryptHelper')
 
+// XSS prevention
+const xss = require('xss')
+
 /**
  * First need to create a formatting function to pad numbers to two digits for datetime conversion
  **/
@@ -63,6 +66,13 @@ module.exports = {
      */
     email(value) {
         return this.simpleString(value) && patterns.email.test(value.trim()) ? value.trim() : false
+    },
+    /**
+     * Check if it is a valid description
+     * @param {String} value 
+     */
+    description(value) {
+        return this.simpleString(value) ? xss(value.trim()) : false
     },
     /**
      * Converts jsDate to myslq date

@@ -16,21 +16,20 @@ function init({ sequelize, Theatre }) {
      */
     class Movie extends Model {
         /**
-         * Check if theatre exists
-         * @param {String} theatreId 
+         * Check if all the theatres exists
+         * @param {Array} theatres 
          */
-        static async checkIfTheatreExists({ theatreId }) {
-            return await Theatre.checkIfTheatreExists({ theatreId })
+        static async checkIfTheatresExists(theatres) {
+            return await Theatre.checkIfTheatresExists(theatres)
         }
 
         /**
-         * Add a new movie
+         * Add a new movie and create corresponding shows
          * @param {String} name
-         * @param {String} startsAt
-         * @param {String} endsAt
-         * @param {String} theatreId
+         * @param {String} description
+         * @param {Array} values
          */
-        static async addNewMovie({ name, startsAt, endsAt, theatreId }) {
+        static async addNewMovie({ name, description, values }) {
             // Step 1: Start transaction
             const t = await sequelize.transaction()
 
@@ -38,22 +37,23 @@ function init({ sequelize, Theatre }) {
             try {
                 // Step 2.1: Create new movie
                 const movie = await Movie.create({
-                    name
+                    name,
+                    description
                 })
 
-                // Step 2.2: Create new show
-                const show = await Show.create({
-                    startsAt,
-                    endsAt,
-                    MovieId: movie.id,
-                    TheatreId: theatreId
-                })
+                // Step 2.2: Create new shows
+                await Show.bulkCreate(values.map(value => {
+                    return {
+                        ...value,
+                        MovieId: movie.id
+                    }
+                }))
 
                 // Step 2.3: Commit
                 await t.commit()
 
                 // Step 2.4: Return the show
-                return show
+                return movie
             } catch (err) {
                 // Step 2.1: Rollback incase of error
                 await t.rollback()
