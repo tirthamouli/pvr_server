@@ -24,38 +24,29 @@ const Auth = authInit({ sequelize, User })
 const Movie = movieInit({ sequelize, Theatre })
 
 
-async function callm() {
-    // const res = await City.searchCityByName({ limit: 1, name: "va" })
-    const user = await Auth.findOne({
-        attributes: ['id', 'password'],
-        include: [{
-            model: User,
-            attributes: ['firstName', 'lastName', 'email']
-        }],
-        where: {
-            username: {
-                [Op.eq]: 'boom'
-            }
-        }
-    })
-}
-
-callm()
-
-
-// sequelize.sync({ force: true, logging: console.log }).then(async () => {
-//     const allCityObject = allCities.map(city => {
-//         return {
-//             name: city
+// async function callm() {
+//     // const res = await City.searchCityByName({ limit: 1, name: "va" })
+//     const user = await Auth.findOne({
+//         attributes: ['id', 'password'],
+//         include: [{
+//             model: User,
+//             attributes: ['firstName', 'lastName', 'email']
+//         }],
+//         where: {
+//             username: {
+//                 [Op.eq]: 'boom'
+//             }
 //         }
 //     })
-//     for (let i = 0; i < allCityObject.length; i++) {
-//         City.create(allCityObject[i]).then((res) => {
+// }
 
-//         })
-//     }
+// callm()
 
-// }).catch((err) => {
-//     console.log(err)
-// })
+
+sequelize.sync({ alter: true, logging: console.log }).then(async () => {
+    console.log("Done")
+
+}).catch((err) => {
+    console.log(err)
+})
 

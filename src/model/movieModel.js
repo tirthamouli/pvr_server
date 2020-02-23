@@ -86,6 +86,13 @@ function init({ sequelize, Theatre }) {
             type: DataTypes.STRING,
             allowNull: false
         },
+        /**
+         * description - Description of the movie
+         */
+        description: {
+            type: DataTypes.TEXT,
+            allowNull: false
+        }
     }, {
         sequelize,
         tableName: 'movie', // Table name is movie
