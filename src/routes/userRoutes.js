@@ -16,13 +16,27 @@ const userController =
 
 // Using middlewares - json parser, verifyToken
 router.use(bodyParser.json())
-router.use(verifyToken)
+
 
 /**
- * Login route
+ * Create route
  */
-router.post('/create',
+router.post('/create', verifyToken,
     userController.create.bind(userController)
+)
+
+/**
+ * Search route
+ */
+router.get('/search', verifyToken,
+    userController.search.bind(userController)
+)
+
+/**
+ * Search city route
+ */
+router.get('/city/search',
+    userController.searchCity.bind(userController)
 )
 
 module.exports = router

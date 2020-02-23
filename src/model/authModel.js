@@ -79,7 +79,7 @@ function init({ sequelize, User }) {
                     }
                 })
                 if (auth !== null) {
-                    return "USERNAME_EXISTS"
+                    return "username is taken"
                 }
 
                 // Step 2: Check if user with the email exists

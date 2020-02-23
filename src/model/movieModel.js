@@ -24,6 +24,28 @@ function init({ sequelize, Theatre }) {
         }
 
         /**
+         * Search for movies by name
+         * @param {String} name 
+         * @param {Number} limit 
+         */
+        static async searchMovieByName({ name, limit = 15 }) {
+            // Step 1: Get all the cities with limit and offset
+            const movies = await Movie.findAll({
+                attributes: ['id', 'name', 'description'],
+                limit: limit,
+                order: [['name']],
+                where: {
+                    name: {
+                        [Op.like]: `${name}%`
+                    }
+                }
+            })
+
+            // Step 2: Return the cities
+            return movies
+        }
+
+        /**
          * Add a new movie and create corresponding shows
          * @param {String} name
          * @param {String} description
@@ -98,7 +120,13 @@ function init({ sequelize, Theatre }) {
         tableName: 'movie', // Table name is movie
         timestamps: true, // Enabling timestamp
         createdAt: 'created', // Created column
-        updatedAt: 'updated' // Updated column
+        updatedAt: 'updated', // Updated column
+        indexes: [
+            {
+                name: 'name_index',
+                fields: ['name'],
+            }
+        ]
     })
 
     // Step 2: Initialize the pivot table

@@ -47,6 +47,13 @@ module.exports = {
         return this.simpleString(value) && patterns.name.test(value.trim()) ? value.trim() : false
     },
     /**
+     * Simple string check
+     * @param {String} value 
+     */
+    simpleStringCheck(value) {
+        return this.simpleString(value) ? value.trim() : false
+    },
+    /**
      * Check if theatre name is valid
      * @param {String} value 
      */

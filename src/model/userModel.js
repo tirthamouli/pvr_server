@@ -35,7 +35,7 @@ function init({ sequelize, City }) {
                     }
                 })
                 if (user !== null) {
-                    return "EMAIL_EXISTS"
+                    return "email already exists"
                 }
 
                 // Return false as user doesn't exist
@@ -51,6 +51,54 @@ function init({ sequelize, City }) {
          */
         static async checkIfCityExists({ cityId }) {
             return await City.checkIfCityExists({ cityId })
+        }
+
+        /**
+         * Search for users
+         * @param {String} search 
+         */
+        static async searchUserByName({ search, limit }) {
+            try {
+                // Step 1: Search user
+                const users = await User.findAll({
+                    attributes: ['id', 'firstName', 'lastName', 'email'],
+                    limit: limit,
+                    order: [['name']],
+                    include: [{
+                        model: City,
+                        attributes: ["id", "name"]
+                    }],
+                    where: {
+                        [Op.or]: [
+                            {
+                                firstName: {
+                                    [Op.like]: `${search}%`
+                                },
+                            },
+                            {
+                                lastName: {
+                                    [Op.like]: `${search}%`
+                                },
+                            }
+                        ]
+                    },
+                    order: ['firstName', 'lastName']
+                })
+
+                // Step 2: Return user
+                return users
+            } catch (err) {
+                throw new InternalServer("unable to search user by name")
+            }
+        }
+
+        /**
+         * Search a city by name
+         * @param {String} name 
+         * @param {Number} limit 
+         */
+        static async searchCityByName({ name, limit = 5 }) {
+            return await City.searchCityByName({ name, limit })
         }
     }
 
@@ -69,7 +117,7 @@ function init({ sequelize, City }) {
          */
         firstName: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
         },
         /**
          * lastName - Last name of the user
@@ -91,10 +139,21 @@ function init({ sequelize, City }) {
         tableName: 'user', // Table name is user
         timestamps: true, // Enabling timestamp
         createdAt: 'created', // Created column
-        updatedAt: 'updated' // Updated column
+        updatedAt: 'updated', // Updated column
+        indexes: [
+            {
+                name: 'first_name_index',
+                fields: ['firstName'],
+            },
+            {
+                name: 'last_name_index',
+                fields: ['lastName'],
+            }
+        ]
     })
 
     // Step 2: Difining associations
+    User.belongsTo(City, { foreignKey: 'cityId' })
     City.hasMany(User, { foreignKey: 'cityId' })
 
     // Step 3: Return the class

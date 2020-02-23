@@ -94,5 +94,31 @@ class MovieService {
             message: "movie added successfully"
         }
     }
+
+    /**
+     * Search a movie by name
+     * @param {String} search 
+     */
+    async search({ search }) {
+        // Step 1: Validate and format
+        const searchV = validationHelper.simpleStringCheck(search)
+
+        // Step 2: Get the result
+        const movies = await this.MovieModel.searchMovieByName({ name: searchV, limit: 15 })
+
+        // Step 3: Format response
+        const movieRes = movies.map(movie => {
+            return {
+                id: movie.id,
+                name: movie.name,
+                description: movie.description
+            }
+        })
+
+        // Step 4: Return the res
+        return {
+            movies: movieRes
+        }
+    }
 }
 module.exports = MovieService

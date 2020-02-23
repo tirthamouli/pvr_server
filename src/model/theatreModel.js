@@ -70,7 +70,13 @@ function init({ sequelize, City }) {
         tableName: 'theatre', // Table name is theatre
         timestamps: true, // Enabling timestamp
         createdAt: 'created', // Created column
-        updatedAt: 'updated' // Updated column
+        updatedAt: 'updated', // Updated column
+        indexes: [
+            {
+                name: 'name_index',
+                fields: ['name'],
+            }
+        ]
     })
 
     // Step 2: Defining associations

@@ -44,8 +44,8 @@ class UserService {
         }
 
         // Step 3: Check if cityId is correct
-        const cityExisits = await this.UserModel.checkIfCityExists({ cityId })
-        if (!cityExisits) {
+        const cityName = await this.UserModel.checkIfCityExists({ cityId })
+        if (!cityName) {
             throw new BadRequest("city doesn't exist")
         }
 
@@ -59,11 +59,67 @@ class UserService {
 
         // Step 5: Return the newly created user
         return {
-            id: user.id,
-            firstName: firstNameV,
-            lastName: lastNameV,
-            email: emailV,
+            user: {
+                id: user.id,
+                firstName: firstNameV,
+                lastName: lastNameV,
+                email: emailV,
+                city: cityName
+            },
             message: "user created successfully"
+        }
+    }
+
+    /**
+     * Search for user by name
+     * @param {String} search 
+     */
+    async search({ search }) {
+        // Step 1: Validate and format
+        const searchV = validationHelper.simpleStringCheck(search)
+
+        // Step 2: Get the result
+        const users = await this.UserModel.searchUserByName({ search: searchV, limit: 10 })
+
+        // Step 3: Format response
+        const userRes = users.map(user => {
+            return {
+                id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                city: user.City.name
+            }
+        })
+
+        // Step 4: Return the res
+        return {
+            users: userRes
+        }
+    }
+
+    /**
+     * Search for city by name
+     * @param {String} search 
+     */
+    async searchCity({ search }) {
+        // Step 1: Validate and format
+        const searchV = validationHelper.simpleStringCheck(search)
+
+        // Step 2: Get the result
+        const cities = await this.UserModel.searchCityByName({ name: searchV, limit: 5 })
+
+        // Step 3: Format response
+        const cityRes = cities.map(city => {
+            return {
+                id: city.id,
+                name: city.name
+            }
+        })
+
+        // Step 4: Return the res
+        return {
+            cities: cityRes
         }
     }
 }

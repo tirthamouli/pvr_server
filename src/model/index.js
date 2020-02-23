@@ -24,25 +24,25 @@ const Auth = authInit({ sequelize, User })
 const Movie = movieInit({ sequelize, Theatre })
 
 
-async function callm() {
-    // const res = await City.searchCityByName({ limit: 1, name: "va" })
-    const user = await User.findAll({
-        where: {
-            firstName: {
-                [Op.in]: ['Tirthamouli', 'Tapodhir']
-            }
-        }
-    })
-    console.log(user.length)
-}
+// async function callm() {
+//     // const res = await City.searchCityByName({ limit: 1, name: "va" })
+//     const user = await User.findAll({
+//         where: {
+//             firstName: {
+//                 [Op.in]: ['Tirthamouli', 'Tapodhir']
+//             }
+//         }
+//     })
+//     console.log(user.length)
+// }
 
-callm()
+// callm()
 
 
-// sequelize.sync({ alter: true, logging: console.log }).then(async () => {
-//     console.log("Done")
+sequelize.sync({ alter: true, logging: console.log }).then(async () => {
+    console.log("Done")
 
-// }).catch((err) => {
-//     console.log(err)
-// })
+}).catch((err) => {
+    console.log(err)
+})
 

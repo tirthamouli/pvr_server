@@ -47,7 +47,7 @@ function init({ sequelize }) {
 
             // Step 2: Check if city exists
             if (city !== null) {
-                return "CITY_EXISTS"
+                return city.name
             }
 
             // Step 3: Return false because city doesn't exists

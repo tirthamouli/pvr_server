@@ -25,4 +25,11 @@ router.post('/add',
     movieController.add.bind(movieController)
 )
 
+/**
+ * Login route
+ */
+router.get('/search',
+    movieController.search.bind(movieController)
+)
+
 module.exports = router

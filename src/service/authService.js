@@ -45,7 +45,6 @@ class AuthService {
             throw new BadRequest("invalid data")
         }
 
-
         // Step 2: Check if username or email exists
         const usernameOrEmailExists = await this.AuthModel.checkIfUserExists({ email: emailV, username: usernameV })
         if (usernameOrEmailExists !== false) {
