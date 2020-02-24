@@ -3,7 +3,7 @@
  * Author: Tirthamouli Baidya
  */
 
-const { Model, DataTypes } = require("sequelize")
+const { Model, DataTypes, Op } = require("sequelize")
 
 /**
  * 
@@ -29,20 +29,24 @@ function init({ sequelize, Theatre }) {
          * @param {Number} limit 
          */
         static async searchMovieByName({ name, limit = 15 }) {
-            // Step 1: Get all the cities with limit and offset
-            const movies = await Movie.findAll({
-                attributes: ['id', 'name', 'description'],
-                limit: limit,
-                order: [['name']],
-                where: {
-                    name: {
-                        [Op.like]: `${name}%`
+            try {
+                // Step 1: Get all the cities with limit and offset
+                const movies = await Movie.findAll({
+                    attributes: ['id', 'name', 'description'],
+                    limit: limit,
+                    order: [['name']],
+                    where: {
+                        name: {
+                            [Op.like]: `${name}%`
+                        }
                     }
-                }
-            })
+                })
 
-            // Step 2: Return the cities
-            return movies
+                // Step 2: Return the cities
+                return movies
+            } catch (err) {
+                throw new InternalServer("unable to search movie by name")
+            }
         }
 
         /**
