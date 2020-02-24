@@ -49,8 +49,10 @@ class TheatreService {
 
         // Step 4: Return the newly created theatre
         return {
-            id: theatre.id,
-            name: nameV,
+            theatre:{
+                id: theatre.id,
+                name: nameV
+            },
             message: "theatre created successfully"
         }
     }
