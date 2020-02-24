@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: src/helper/validationHelper.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: src/helper/validationHelper.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Validation helper
+ * Author: Tirthamouli Baidya
+ */
+
+const { hash } = require('./bcryptHelper')
+
+// XSS prevention
+const xss = require('xss')
+
+/**
+ * First need to create a formatting function to pad numbers to two digits for datetime conversion
+ **/
+function twoDigits(d) {
+    if (0 &lt;= d &amp;&amp; d &lt; 10) return "0" + d.toString();
+    if (-10 &lt; d &amp;&amp; d &lt; 0) return "-0" + (-1 * d).toString();
+    return d.toString();
+}
+
+/**
+ * Regex patterns for validation
+ */
+const patterns = {
+    name: /^[a-z]{3,}$/i,
+    username: /^[a-z0-9_]{3,}$/i,
+    theatreName: /^[a-z0-9_+\-': ]+$/i,
+    email: /^([a-z0-9\.-_%+]+)@([a-z0-9-]+)\.([a-z]{2,10})(\.[a-z]{2,5})?$/i,
+    password: /^(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&amp;*]).*$/
+}
+
+/**
+ * Exporting the validation functions
+ */
+module.exports = {
+    /**
+     * Check if value is of type string
+     * @param {String} value 
+     */
+    simpleString(value) {
+        return typeof value === 'string'
+    },
+    /**
+     * Check weater number is int
+     * @param {Number} value 
+     */
+    intCheck(value) {
+        return isNaN(value) ? false : parseInt(value)
+    },
+    /**
+     * Sanitize and format a name
+     * @param {String} value
+     */
+    name(value) {
+        return this.simpleString(value) &amp;&amp; patterns.name.test(value.trim()) ? value.trim() : false
+    },
+    /**
+     * Simple string check
+     * @param {String} value 
+     */
+    simpleStringCheck(value) {
+        return this.simpleString(value) ? value.trim() : false
+    },
+    /**
+     * Check if theatre name is valid
+     * @param {String} value 
+     */
+    movieOrTheatreName(value) {
+        return this.simpleString(value) &amp;&amp; patterns.theatreName.test(value.trim()) ? value.trim() : false
+    },
+    /**
+     * Sanitize and format an username
+     * @param {String} value 
+     */
+    username(value) {
+        return this.simpleString(value) &amp;&amp; patterns.username.test(value.trim()) ? value.trim() : false
+    },
+    /**
+     * Sanitize and format email
+     * @param {String} value 
+     */
+    email(value) {
+        return this.simpleString(value) &amp;&amp; patterns.email.test(value.trim()) ? value.trim() : false
+    },
+    /**
+     * Check if it is a valid description
+     * @param {String} value 
+     */
+    description(value) {
+        return this.simpleString(value) ? xss(value.trim()) : false
+    },
+    /**
+     * Converts jsDate to myslq date
+     * @param {String} jsDate 
+     */
+    dateToMysqlFormat(jsDate) {
+        // Step 1: Get JS Date
+        const date = new Date(jsDate)
+
+        // Step 2: Check if date is valid
+        if (isNaN(date.getTime())) {
+            // Date is invalid
+            return false
+        }
+
+        // Step 3: Convert to mysql date
+        return date.getUTCFullYear() + "-" + twoDigits(1 + date.getUTCMonth()) + "-" + twoDigits(date.getUTCDate()) + " " + twoDigits(date.getUTCHours()) + ":" + twoDigits(date.getUTCMinutes()) + ":" + twoDigits(date.getUTCSeconds());
+    },
+    /**
+     * Sanitize and format password
+     * @param {String} password 
+     * @param {String} repeatPassword 
+     */
+    async password(password, repeatPassword) {
+        // Step 1: Check if password is equal to repeat password
+        if (!this.simpleString(password) || password !== repeatPassword) {
+            return false
+        }
+
+        // Step 2: Check if password is having correct regex
+        if (!patterns.password.test(password)) {
+            return false
+        }
+
+        // Step 3: Hash the password
+        const hashedPassword = await hash(password)
+
+        // Step 4: Return hash
+        return hashedPassword
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Auth.html">Auth</a></li><li><a href="AuthController.html">AuthController</a></li><li><a href="AuthService.html">AuthService</a></li><li><a href="BadRequest.html">BadRequest</a></li><li><a href="City.html">City</a></li><li><a href="Forbidden.html">Forbidden</a></li><li><a href="InternalServer.html">InternalServer</a></li><li><a href="Movie.html">Movie</a></li><li><a href="MovieController.html">MovieController</a></li><li><a href="MovieService.html">MovieService</a></li><li><a href="Show.html">Show</a></li><li><a href="Theatre.html">Theatre</a></li><li><a href="TheatreController.html">TheatreController</a></li><li><a href="TheatreService.html">TheatreService</a></li><li><a href="User.html">User</a></li><li><a href="UserController.html">UserController</a></li><li><a href="UserService.html">UserService</a></li></ul><h3>Global</h3><ul><li><a href="global.html#authRoutes">authRoutes</a></li><li><a href="global.html#bcrypt">bcrypt</a></li><li><a href="global.html#compare">compare</a></li><li><a href="global.html#description">description</a></li><li><a href="global.html#email">email</a></li><li><a href="global.html#endsAt">endsAt</a></li><li><a href="global.html#express">express</a></li><li><a href="global.html#firstName">firstName</a></li><li><a href="global.html#hash">hash</a></li><li><a href="global.html#id">id</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#jwt">jwt</a></li><li><a href="global.html#lastName">lastName</a></li><li><a href="global.html#logger">logger</a></li><li><a href="global.html#name">name</a></li><li><a href="global.html#nodemailer">nodemailer</a></li><li><a href="global.html#password">password</a></li><li><a href="global.html#patterns">patterns</a></li><li><a href="global.html#pool">pool</a></li><li><a href="global.html#showVerifier">showVerifier</a></li><li><a href="global.html#sign">sign</a></li><li><a href="global.html#startsAt">startsAt</a></li><li><a href="global.html#transporter">transporter</a></li><li><a href="global.html#twoDigits">twoDigits</a></li><li><a href="global.html#username">username</a></li><li><a href="global.html#verify">verify</a></li><li><a href="global.html#verifyToken">verifyToken</a></li><li><a href="global.html#winston">winston</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue Feb 25 2020 02:20:23 GMT+0530 (India Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
