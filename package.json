@@ -7,7 +7,12 @@
   "author": "Tirthamouli",
   "license": "MIT",
   "scripts": {
-    "lint": "eslint"
+    "start": "pm2 start console/start.js",
+    "cluster": "pm2 start console/start.js -i max",
+    "reload": "pm2 reload all",
+    "monit": "pm2 monit",
+    "stop": "pm2 stop all",
+    "generateDB": "node console/generateTables.js"
   },
   "dependencies": {
     "bcrypt": "^4.0.0",
@@ -17,6 +22,7 @@
     "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.1.0",
     "nodemailer": "^6.4.2",
+    "pm2": "^4.2.3",
     "sequelize": "^5.21.5",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.4.2",
