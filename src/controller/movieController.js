@@ -73,7 +73,7 @@ class MovieController {
             }
 
             // Step 2.2: Pass the request to the service
-            response = await this.movieService.search({ search: req.query.value })
+            response = await this.movieService.search(req.query)
 
             // Step 2.3: Set the status code
             response.code = 200

@@ -112,9 +112,9 @@ class MovieService {
      * @param {String} search 
      * @param {Number} page 
      */
-    async search({ search, page = 0 }) {
+    async search({ value = '', page = 0 }) {
         // Step 1: Validate and format
-        const searchV = validationHelper.simpleStringCheck(search)
+        const searchV = validationHelper.simpleStringCheck(value)
         const pageV = validationHelper.intCheck(page)
         if (searchV === false || page === false) {
             throw new BadRequest("invalid data")

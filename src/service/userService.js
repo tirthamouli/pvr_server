@@ -78,16 +78,16 @@ class UserService {
      * @param {String} search 
      * @param {Number} page 
      */
-    async search({ search, page = 0 }) {
+    async search({ value = '', page = 0 }) {
         // Step 1: Validate and format
-        const searchV = validationHelper.simpleStringCheck(search)
+        const searchV = validationHelper.simpleStringCheck(value)
         const pageV = validationHelper.intCheck(page)
         if (searchV === false || pageV === false) {
             throw new BadRequest("invalid data")
         }
 
         // Step 2: Get the result
-        const users = await this.UserModel.searchUserByName({ search: searchV, limit: 10, offset: 10 * page })
+        const users = await this.UserModel.searchUserByName({ search: searchV, limit: 10, offset: 10 * pageV })
 
         // Step 3: Format response
         const userRes = users.map(user => {

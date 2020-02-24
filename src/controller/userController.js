@@ -73,7 +73,7 @@ class UserController {
             }
 
             // Step 2.2: Pass the request to user service
-            response = await this.userService.search({ search: req.query.value })
+            response = await this.userService.search(req.query)
 
             // Step 2.3: Set the status code
             response.code = 200
