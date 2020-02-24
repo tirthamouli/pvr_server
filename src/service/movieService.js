@@ -155,22 +155,23 @@ class MovieService {
             return user.email
         })
 
-        // Step 4: Generate some random title, incase of a real project we should create a template for the message
-        const title = `${movie.name} now in your city!!`
-        const body =
-            `${movie.name} is now in your city.
-            Want to know about '${movie.description}'?
-            PVRCinema in your city is now plaing ${movie.name}.
-            Watch today!!`
+        // Step 4: Check if email array is empty
+        if (emailArr.length === 0) {
+            throw new BadRequest("No one to notify")
+        }
 
-        // Step 5: Send the mail
+        // Step 5: Generate some random title, incase of a real project we should create a template for the message
+        const title = `${movie.name} now in your city!!`
+        const body = `${movie.name} is now in your city.\nWant to know about '${movie.description}'?\nPVRCinema in your city is now plaing ${movie.name}.\nWatch today!!`
+
+        // Step 6: Send the mail
         await sendMail({
             to: emailArr,
             subject: title,
             text: body
         })
 
-        // Step 6: Return the res
+        // Step 7: Return the res
         return {
             message: 'Email successfully sent'
         }

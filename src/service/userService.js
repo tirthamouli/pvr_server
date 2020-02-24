@@ -142,7 +142,8 @@ class UserService {
         // Step 1: Validate data
         const titleV = validationHelper.movieOrTheatreName(title)
         const bodyV = validationHelper.description(body)
-        if (!titleV || !bodyV || !id.constructor.name !== 'Array') {
+        console.log(titleV, bodyV, id)
+        if (!titleV || !bodyV || id.constructor.name !== 'Array') {
             throw new BadRequest("invalid data")
         }
 
@@ -154,14 +155,19 @@ class UserService {
             return user.email
         })
 
-        // Step 4: Send the mail
+        // Step 4: Check if email array is empty
+        if (emailArr.length !== id.length) {
+            throw new BadRequest("Invalid id sent")
+        }
+
+        // Step 5: Send the mail
         await sendMail({
             to: emailArr,
             subject: titleV,
             text: body
         })
 
-        // Step 5: Send response
+        // Step 6: Send response
         return {
             message: "mail successfully sent"
         }

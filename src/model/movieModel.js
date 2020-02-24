@@ -3,7 +3,7 @@
  * Author: Tirthamouli Baidya
  */
 
-const { Model, DataTypes, Op } = require("sequelize")
+const { Model, DataTypes, Op, QueryTypes } = require("sequelize")
 
 // Exceptions
 const InternalServer = require("../exception/internalServerException")
