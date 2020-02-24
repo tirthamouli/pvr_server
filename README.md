@@ -11,8 +11,8 @@
 1. Take a pull from here https://github.com/Boom0027/pvr_server.git
 2. Inside the directory add a .env file
 3. Add these environment variables
-```
-EMAIL_SERVICE=<servie> eg: gmail
+```.env
+    EMAIL_SERVICE=<servie> eg: gmail
     EMAIL_USERNAME=<email_user_name> eg: abc@gmail.com
     EMAIL_PASSWORD=<your_email_password>
     EMAIL_MAX_CONNECTIONS=<max_number_of_connections_to_email_client> eg: 10
@@ -28,5 +28,6 @@ EMAIL_SERVICE=<servie> eg: gmail
     BCRYPT_SALT_ROUNDS=<bcrypt_salt_rounds> eg: 10 - default
 
     JWT_SECRET=<jwt_secret>
-```    
+```
+    
 4. 
