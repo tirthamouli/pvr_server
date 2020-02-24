@@ -16,32 +16,38 @@ const BadRequest = require("../exception/badRequestException")
  */
 async function showVerifier(shows, MovieModel) {
     // Step 1: Checking if show is an array
-    if (typeof shows !== 'array') {
+    if (shows.constructor.name !== 'Array') {
         return false
     }
 
     // Step 2: Mapping value
-    let res = []
-    let theatreIdArray = []
+    const res = []
+    const theatreIdArray = []
+    const idCheck = {}
     for (let i = 0; i < shows.length; i++) {
         // Step 2.1: Validate
-        const startV = validationHelper.dateToMysqlFormat(show[i].start)
-        const endV = validationHelper.dateToMysqlFormat(show[i].end)
+        const startV = validationHelper.dateToMysqlFormat(shows[i].start)
+        const endV = validationHelper.dateToMysqlFormat(shows[i].end)
         if (!startV || !endV) {
             return false
         }
 
-        // Step 2.2: Push in res
+        // Step 2.2: Check if we have already inserted the theatre id - Preventing multi inserts
+        if (idCheck.hasOwnProperty(shows[i].theatreId)) {
+            continue
+        }
+        idCheck[shows[i].theatreId] = true
+
+        // Step 2.3: Push in res
         res.push({
             startsAt: startV,
             endsAt: endV,
-            TheatreId: show[i].theatreId
+            TheatreId: shows[i].theatreId
         })
 
-        // Step 2.3: Push in theatreIdArray
-        theatreIdArray.push(show[i].theatreId)
+        // Step 2.4: Push in theatreIdArray
+        theatreIdArray.push(shows[i].theatreId)
     }
-
     // Step 3: Check if all theatre ids exists
     const theatresExists = await MovieModel.checkIfTheatresExists(theatreIdArray)
     if (!theatresExists) {
@@ -75,7 +81,7 @@ class MovieService {
         // Step 1: Validate and format
         const nameV = validationHelper.movieOrTheatreName(name)
         const descriptionV = validationHelper.description(description)
-        const showsV = await showVerifier(shows)
+        const showsV = await showVerifier(shows, this.MovieModel)
         if (!nameV || !descriptionV || !showsV) {
             throw new BadRequest("invalid data")
         }
@@ -89,8 +95,11 @@ class MovieService {
 
         // Step 3: Return the newly created movie
         return {
-            id: movie.id,
-            name: name,
+            movie: {
+                id: movie.id,
+                name: name,
+                description: descriptionV
+            },
             message: "movie added successfully"
         }
     }
