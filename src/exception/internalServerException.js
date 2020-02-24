@@ -1,6 +1,10 @@
 /**
  * Internal server error, throw this in a function when there is something wrong with the server working
+ * Author: Tirthamouli Baidya
  */
+
+const logger = require("../logger/logger")
+
 class InternalServer extends Error {
     /**
      * 
@@ -10,10 +14,13 @@ class InternalServer extends Error {
         // Step 1: Call the parent constuctor
         super(message)
 
-        // Step 2: Set the name
+        // Step 2: Log the error
+        logger.error("ERROR 500: " + message)
+
+        // Step 3: Set the name
         this.name = this.constructor.name
 
-        // Step 3: Set the status 
+        // Step 4: Set the status 
         this.status = 500
     }
 

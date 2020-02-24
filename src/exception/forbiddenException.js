@@ -1,6 +1,10 @@
 /**
  * Forbidden error, throw this in a function when user doesn't have access
+ * Author: Tirthamouli Baidya
  */
+
+const logger = require("../logger/logger")
+
 class Forbidden extends Error {
     /**
      * 
@@ -10,10 +14,13 @@ class Forbidden extends Error {
         // Step 1: Call the parent constuctor
         super(message)
 
-        // Step 2: Set the name
+        // Step 2: Log the error
+        logger.error("ERROR 403: " + message)
+
+        // Step 3: Set the name
         this.name = this.constructor.name
 
-        // Step 3: Set the status 
+        // Step 4: Set the status 
         this.status = 403
     }
 
