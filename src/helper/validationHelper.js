@@ -23,7 +23,7 @@ function twoDigits(d) {
 const patterns = {
     name: /^[a-z]{3,}$/i,
     username: /^[a-z0-9_]{3,}$/i,
-    theatreName: /^[a-z0-9_+\- ]+$/i,
+    theatreName: /^[a-z0-9_+\-': ]+$/i,
     email: /^([a-z0-9\.-_%+]+)@([a-z0-9-]+)\.([a-z]{2,10})(\.[a-z]{2,5})?$/i,
     password: /^(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).*$/
 }
