@@ -1,4 +1,4 @@
-# PVRCINEMA TEST
+# PVR CINEMA TEST
 
 ## Requirements
 
@@ -9,8 +9,7 @@
 ## How to install
 
 1. Take a pull from here https://github.com/Boom0027/pvr_server.git
-2. Inside the directory add a .env file
-3. Add these environment variables
+2. Inside the directory add a .env file and add the following environment variable. Replace the variables with your own environment variable.
 ```.env
     EMAIL_SERVICE=<servie> eg: gmail
     EMAIL_USERNAME=<email_user_name> eg: abc@gmail.com
@@ -29,5 +28,6 @@
 
     JWT_SECRET=<jwt_secret>
 ```
-    
-4. 
+#### Note: If you use gmail as email service, you need to enable insecure apps from here https://myaccount.google.com/lesssecureapps.
+3. Run 'yarn install' in your command line interface to install all dependencies.
+4. Run 

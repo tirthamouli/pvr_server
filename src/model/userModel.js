@@ -61,10 +61,10 @@ function init({ sequelize, City }) {
             try {
                 // Step 1: Search user
                 const users = await User.findAll({
-                    attributes: ['id', 'firstName', 'lastName', 'email'],
+                    attributes: ["id", "firstName", "lastName", "email"],
                     limit: limit,
                     offset: offset,
-                    order: [['name']],
+                    order: [["name"]],
                     include: [{
                         model: City,
                         attributes: ["id", "name"]
@@ -83,7 +83,7 @@ function init({ sequelize, City }) {
                             }
                         ]
                     },
-                    order: ['firstName', 'lastName']
+                    order: ["firstName", "lastName"]
                 })
 
                 // Step 2: Return user
@@ -161,25 +161,25 @@ function init({ sequelize, City }) {
         }
     }, {
         sequelize,
-        tableName: 'user', // Table name is user
+        tableName: "user", // Table name is user
         timestamps: true, // Enabling timestamp
-        createdAt: 'created', // Created column
-        updatedAt: 'updated', // Updated column
+        createdAt: "created", // Created column
+        updatedAt: "updated", // Updated column
         indexes: [
             {
-                name: 'first_name_index',
-                fields: ['firstName'],
+                name: "first_name_index",
+                fields: ["firstName"],
             },
             {
-                name: 'last_name_index',
-                fields: ['lastName'],
+                name: "last_name_index",
+                fields: ["lastName"],
             }
         ]
     })
 
     // Step 2: Difining associations
-    User.belongsTo(City, { foreignKey: 'cityId' })
-    City.hasMany(User, { foreignKey: 'cityId' })
+    User.belongsTo(City, { foreignKey: "cityId" })
+    City.hasMany(User, { foreignKey: "cityId" })
 
     // Step 3: Return the class
     return User

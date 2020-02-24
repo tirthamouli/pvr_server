@@ -36,7 +36,7 @@ class AuthController {
             // Step 2.1: Check if we have the correct request format
             if (!bulkCheckHasOwnProperty({
                 obj: req.body,
-                propArray: ['username', 'password']
+                propArray: ["username", "password"]
             })) {
                 throw new BadRequest("bad request")
             }
@@ -70,7 +70,7 @@ class AuthController {
             // Step 2.1: Check if we have the correct request format
             if (!bulkCheckHasOwnProperty({
                 obj: req.body,
-                propArray: ['firstName', 'lastName', 'email', 'username', 'password', 'repeatPassword', 'cityId']
+                propArray: ["firstName", "lastName", "email", "username", "password", "repeatPassword", "cityId"]
             })) {
                 throw new BadRequest("bad request")
             }

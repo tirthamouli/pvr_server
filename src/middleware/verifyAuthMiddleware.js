@@ -17,7 +17,7 @@ async function verifyToken(req, res, next) {
     const bearerHeader = req.headers.authorization
 
     // Step 2: Check if bearer is undefined
-    if (typeof bearerHeader === 'undefined') {
+    if (typeof bearerHeader === "undefined") {
         // Step 2.1: Forbidden at this point
         res.status(403)
         return res.json({

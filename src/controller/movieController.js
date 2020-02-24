@@ -33,7 +33,7 @@ class MovieController {
             // Step 2.1: Check if we have the correct request format
             if (!bulkCheckHasOwnProperty({
                 obj: req.body,
-                propArray: ['name', 'description', 'shows']
+                propArray: ["name", "description", "shows"]
             })) {
                 throw new BadRequest("bad request")
             }
@@ -67,7 +67,7 @@ class MovieController {
             // Step 2.1: Check if we have the correct request format
             if (!bulkCheckHasOwnProperty({
                 obj: req.query,
-                propArray: ['value']
+                propArray: ["value"]
             })) {
                 throw new BadRequest("bad request")
             }
@@ -101,7 +101,7 @@ class MovieController {
             // Step 2.1: Check if we have the correct request format
             if (!bulkCheckHasOwnProperty({
                 obj: req.body,
-                propArray: ['movieId']
+                propArray: ["movieId"]
             })) {
                 throw new BadRequest("bad request")
             }

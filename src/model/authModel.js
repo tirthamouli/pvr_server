@@ -112,10 +112,10 @@ function init({ sequelize, User }) {
             try {
                 // Step 1: Get the user details
                 const user = await Auth.findOne({
-                    attributes: ['id', 'password'],
+                    attributes: ["id", "password"],
                     include: [{
                         model: User,
-                        attributes: ['firstName', 'lastName', 'email']
+                        attributes: ["firstName", "lastName", "email"]
                     }],
                     where: {
                         username: {
@@ -160,14 +160,14 @@ function init({ sequelize, User }) {
         }
     }, {
         sequelize,
-        tableName: 'auth', // Table name is auth
+        tableName: "auth", // Table name is auth
         timestamps: true, // Enabling timestamp
-        createdAt: 'created', // Created column
-        updatedAt: 'updated' // Updated column
+        createdAt: "created", // Created column
+        updatedAt: "updated" // Updated column
     })
 
     // Step 2: Defining associations
-    Auth.belongsTo(User, { foreignKey: 'userId' })
+    Auth.belongsTo(User, { foreignKey: "userId" })
 
     // Step 2: Return the class
     return Auth

@@ -33,7 +33,7 @@ class UserController {
             // Step 2.1: Check if we have the correct request format
             if (!bulkCheckHasOwnProperty({
                 obj: req.body,
-                propArray: ['firstName', 'lastName', 'email', 'cityId']
+                propArray: ["firstName", "lastName", "email", "cityId"]
             })) {
                 throw new BadRequest("bad request")
             }
@@ -67,7 +67,7 @@ class UserController {
             // Step 2.1: Check if we have the correct request format
             if (!bulkCheckHasOwnProperty({
                 obj: req.query,
-                propArray: ['value']
+                propArray: ["value"]
             })) {
                 throw new BadRequest("bad request")
             }
@@ -101,7 +101,7 @@ class UserController {
             // Step 2.1: Check if we have the correct request format
             if (!bulkCheckHasOwnProperty({
                 obj: req.query,
-                propArray: ['value']
+                propArray: ["value"]
             })) {
                 throw new BadRequest("bad request")
             }
@@ -135,7 +135,7 @@ class UserController {
             // Step 2.1: Check if we have the correct request format
             if (!bulkCheckHasOwnProperty({
                 obj: req.body,
-                propArray: ['id', 'title', 'body']
+                propArray: ["id", "title", "body"]
             })) {
                 throw new BadRequest("bad request")
             }

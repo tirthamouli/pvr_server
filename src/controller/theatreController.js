@@ -33,7 +33,7 @@ class TheatreController {
             // Step 2.1: Check if we have the correct request format
             if (!bulkCheckHasOwnProperty({
                 obj: req.body,
-                propArray: ['name', 'cityId']
+                propArray: ["name", "cityId"]
             })) {
                 throw new BadRequest("bad request")
             }
@@ -67,7 +67,7 @@ class TheatreController {
             // Step 2.1: Check if we have the correct request format
             if (!bulkCheckHasOwnProperty({
                 obj: req.query,
-                propArray: ['value']
+                propArray: ["value"]
             })) {
                 throw new BadRequest("bad request")
             }

@@ -3,7 +3,7 @@
  * Author: Tirthamouli Baidya
  */
 
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
 // Exception
 const InternalServer = require("../exception/internalServerException")
@@ -43,7 +43,7 @@ function verify(token) {
         jwt.verify(token, process.env.JWT_SECRET, (err, authData) => {
             // Step 3: In case of error, token is incorrect
             if (err) {
-                reject(new Forbidden('invalid token'))
+                reject(new Forbidden("invalid token"))
             }
 
             // Step 4: Resolve the data

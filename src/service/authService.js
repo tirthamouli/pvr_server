@@ -80,7 +80,7 @@ class AuthService {
         // Step 6: Return the response
         return {
             token,
-            message: 'registration successfull'
+            message: "registration successfull"
         }
     }
 
@@ -95,13 +95,13 @@ class AuthService {
 
         // Step 2: Verify if there is an user
         if (user === null) {
-            throw new Forbidden('user does not exist')
+            throw new Forbidden("user does not exist")
         }
 
         // Step 3: Verify password
         const passwordVerification = await compare(password, user.password)
         if (!passwordVerification) {
-            throw new Forbidden('incorrect password')
+            throw new Forbidden("incorrect password")
         }
 
         // Step 4: Create new JWT token
@@ -116,7 +116,7 @@ class AuthService {
         // Step 5: Return the response
         return {
             token,
-            message: 'login successfull'
+            message: "login successfull"
         }
     }
 }

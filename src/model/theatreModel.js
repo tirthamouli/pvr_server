@@ -34,9 +34,9 @@ function init({ sequelize, City }) {
             try {
                 // Step 1: Get all the theatres with limit
                 const theatres = await Theatre.findAll({
-                    attributes: ['id', 'name'],
+                    attributes: ["id", "name"],
                     limit: limit,
-                    order: [['name']],
+                    order: [["name"]],
                     where: {
                         name: {
                             [Op.like]: `${name}%`
@@ -60,7 +60,7 @@ function init({ sequelize, City }) {
             try {
                 // Step 1: Find using theatre id
                 const theatreRes = await Theatre.findAll({
-                    attributes: ['id'],
+                    attributes: ["id"],
                     where: {
                         id: {
                             [Op.in]: theatres
@@ -101,21 +101,21 @@ function init({ sequelize, City }) {
         }
     }, {
         sequelize,
-        tableName: 'theatre', // Table name is theatre
+        tableName: "theatre", // Table name is theatre
         timestamps: true, // Enabling timestamp
-        createdAt: 'created', // Created column
-        updatedAt: 'updated', // Updated column
+        createdAt: "created", // Created column
+        updatedAt: "updated", // Updated column
         indexes: [
             {
-                name: 'name_index',
-                fields: ['name'],
+                name: "name_index",
+                fields: ["name"],
             }
         ]
     })
 
     // Step 2: Defining associations
-    City.hasMany(Theatre, { foreignKey: 'cityId' })
-    Theatre.belongsTo(City, { foreignKey: 'cityId' })
+    City.hasMany(Theatre, { foreignKey: "cityId" })
+    Theatre.belongsTo(City, { foreignKey: "cityId" })
 
     // Step 3: Return the class
     return Theatre

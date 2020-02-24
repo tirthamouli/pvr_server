@@ -144,7 +144,7 @@ class UserService {
         // Step 1: Validate data
         const titleV = validationHelper.movieOrTheatreName(title)
         const bodyV = validationHelper.description(body)
-        if (!titleV || !bodyV || id.constructor.name !== 'Array') {
+        if (!titleV || !bodyV || id.constructor.name !== "Array") {
             throw new BadRequest("invalid data")
         }
 

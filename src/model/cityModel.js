@@ -27,9 +27,9 @@ function init({ sequelize }) {
             try {
                 // Step 1: Get all the cities with limit and offset
                 const cities = await City.findAll({
-                    attributes: ['id', 'name'],
+                    attributes: ["id", "name"],
                     limit: limit,
-                    order: [['name']],
+                    order: [["name"]],
                     where: {
                         name: {
                             [Op.like]: `${name}%`
@@ -87,10 +87,10 @@ function init({ sequelize }) {
         },
     }, {
         sequelize,
-        tableName: 'city', // Table name is user
+        tableName: "city", // Table name is user
         timestamps: true, // Enabling timestamp
-        createdAt: 'created', // Created column
-        updatedAt: 'updated' // Updated column
+        createdAt: "created", // Created column
+        updatedAt: "updated" // Updated column
     })
 
     // Step 2: Return the class

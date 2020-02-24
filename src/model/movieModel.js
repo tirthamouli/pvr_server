@@ -35,10 +35,10 @@ function init({ sequelize, Theatre }) {
             try {
                 // Step 1: Get all the cities with limit and offset
                 const movies = await Movie.findAll({
-                    attributes: ['id', 'name', 'description'],
+                    attributes: ["id", "name", "description"],
                     limit: limit,
                     offset: offset,
-                    order: [['name']],
+                    order: [["name"]],
                     where: {
                         name: {
                             [Op.like]: `${name}%`
@@ -165,14 +165,14 @@ function init({ sequelize, Theatre }) {
         }
     }, {
         sequelize,
-        tableName: 'movie', // Table name is movie
+        tableName: "movie", // Table name is movie
         timestamps: true, // Enabling timestamp
-        createdAt: 'created', // Created column
-        updatedAt: 'updated', // Updated column
+        createdAt: "created", // Created column
+        updatedAt: "updated", // Updated column
         indexes: [
             {
-                name: 'name_index',
-                fields: ['name'],
+                name: "name_index",
+                fields: ["name"],
             }
         ]
     })
@@ -203,10 +203,10 @@ function init({ sequelize, Theatre }) {
         }
     }, {
         sequelize,
-        tableName: 'show', // Table name is movie
+        tableName: "show", // Table name is movie
         timestamps: true, // Enabling timestamp
-        createdAt: 'created', // Created column
-        updatedAt: 'updated' // Updated column
+        createdAt: "created", // Created column
+        updatedAt: "updated" // Updated column
     })
 
     // Step 3: Define association

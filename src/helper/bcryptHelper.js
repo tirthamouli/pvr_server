@@ -2,13 +2,13 @@
  * Bcrypt helper
  * Author: Tirthamouli Baidya
  */
-const bcrypt = require('bcrypt')
+const bcrypt = require("bcrypt")
 const InternalServer = require("../exception/internalServerException")
 
 /**
  * Hash a password using bcrypt
  * @param {String} password 
- */
+*/
 function hash(password) {
     // Step 1: Create a promise wrapper
     return new Promise((resolve, reject) => {

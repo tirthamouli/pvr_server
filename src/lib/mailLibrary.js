@@ -2,8 +2,8 @@
  * Library for sending mails 
  */
 
-const nodemailer = require('nodemailer')
-const BadRequest = require('../exception/badRequestException')
+const nodemailer = require("nodemailer")
+const BadRequest = require("../exception/badRequestException")
 
 /**
  * A common transporter object which will be used to send mail

@@ -3,7 +3,7 @@
  * Author: Tirthamouli Baidya
  */
 
-const { Sequelize } = require('sequelize')
+const { Sequelize } = require("sequelize")
 const cityInit = require("../model/cityModel")
 const userInit = require("../model/userModel")
 const theatreInit = require("../model/theatreModel")
@@ -16,7 +16,7 @@ const logger = require("../logger/logger")
 // Creating a new sequalize pool connection
 const sequelize = new Sequelize(process.env.DATABASE_DATABASE, process.env.DATABASE_USER, process.env.DATABASE_PASSWORD, {
     host: process.env.DATABASE_HOST,
-    dialect: 'mysql',
+    dialect: "mysql",
     logging: logger.info.bind(logger),
     pool: {
         max: +process.env.DATABASE_MAX_CONNECTION,

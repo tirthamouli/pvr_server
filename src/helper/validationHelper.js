@@ -3,10 +3,10 @@
  * Author: Tirthamouli Baidya
  */
 
-const { hash } = require('./bcryptHelper')
+const { hash } = require("./bcryptHelper")
 
 // XSS prevention
-const xss = require('xss')
+const xss = require("xss")
 
 /**
  * First need to create a formatting function to pad numbers to two digits for datetime conversion
@@ -37,7 +37,7 @@ module.exports = {
      * @param {String} value 
      */
     simpleString(value) {
-        return typeof value === 'string'
+        return typeof value === "string"
     },
     /**
      * Check weater number is int

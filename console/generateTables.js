@@ -4,10 +4,10 @@
  */
 
 // Requiring .env
-require('dotenv/config')
+require("dotenv/config")
 
 // Requiring
-const { Sequelize } = require('sequelize')
+const { Sequelize } = require("sequelize")
 const cityInit = require("../src/model/cityModel")
 const userInit = require("../src/model/userModel")
 const theatreInit = require("../src/model/theatreModel")
@@ -19,7 +19,7 @@ const { allCities } = require("../src/data/allCities.json")
 // Creating a new sequalize pool connection
 const sequelize = new Sequelize(process.env.DATABASE_DATABASE, process.env.DATABASE_USER, process.env.DATABASE_PASSWORD, {
     host: process.env.DATABASE_HOST,
-    dialect: 'mysql',
+    dialect: "mysql",
     pool: {
         max: 1,
         min: +process.env.DATABASE_MIN_CONNECTION,

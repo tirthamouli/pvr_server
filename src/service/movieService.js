@@ -19,7 +19,7 @@ const sendMail = require("../lib/mailLibrary")
  */
 async function showVerifier(shows, MovieModel) {
     // Step 1: Checking if show is an array
-    if (shows.constructor.name !== 'Array') {
+    if (shows.constructor.name !== "Array") {
         return false
     }
 
@@ -175,7 +175,7 @@ class MovieService {
 
         // Step 7: Return the res
         return {
-            message: 'Email successfully sent'
+            message: "Email successfully sent"
         }
     }
 }
