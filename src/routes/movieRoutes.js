@@ -26,7 +26,7 @@ router.post('/add',
 )
 
 /**
- * Login route
+ * Search route
  */
 router.get('/search',
     movieController.search.bind(movieController)

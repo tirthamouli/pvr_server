@@ -24,6 +24,27 @@ function init({ sequelize, City }) {
         }
 
         /**
+         * Searches a theatre by name
+         * @param {String} name 
+         */
+        static async searchTheatreByName({ name, limit }) {
+            // Step 1: Get all the theatres with limit
+            const theatres = await Theatre.findAll({
+                attributes: ['id', 'name'],
+                limit: limit,
+                order: [['name']],
+                where: {
+                    name: {
+                        [Op.like]: `${name}%`
+                    }
+                }
+            })
+
+            // Step 2: Return the theatres
+            return theatres
+        }
+
+        /**
          * Check if theatre exists
          * @param {String} theatreId 
          */

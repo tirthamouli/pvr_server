@@ -25,4 +25,12 @@ router.post('/add',
     theatreController.add.bind(theatreController)
 )
 
+/**
+ * Search route
+ */
+router.get('/search',
+    theatreController.search.bind(theatreController)
+)
+
+
 module.exports = router

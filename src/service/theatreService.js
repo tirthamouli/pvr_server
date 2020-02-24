@@ -54,5 +54,30 @@ class TheatreService {
             message: "theatre created successfully"
         }
     }
+
+    /**
+     * Search a theatre by name
+     * @param {String} search 
+     */
+    async search({ search }) {
+        // Step 1: Validate and format
+        const searchV = validationHelper.simpleStringCheck(search)
+
+        // Step 2: Get the result
+        const theatres = await this.TheatreModel.searchTheatreByName({ name: searchV, limit: 5 })
+
+        // Step 3: Format response
+        const theatreRes = theatres.map(theatre => {
+            return {
+                id: theatre.id,
+                name: theatre.name
+            }
+        })
+
+        // Step 4: Return the res
+        return {
+            theatres: theatreRes
+        }
+    }
 }
 module.exports = TheatreService
