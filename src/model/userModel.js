@@ -3,7 +3,7 @@
  * Author: Tirthamouli Baidya
  */
 
-const { Model, DataTypes, Deferrable, Op } = require("sequelize")
+const { Model, DataTypes, Op } = require("sequelize")
 
 // Exceptions
 const InternalServer = require("../exception/internalServerException")
@@ -89,6 +89,30 @@ function init({ sequelize, City }) {
                 return users
             } catch (err) {
                 throw new InternalServer("unable to search user by name")
+            }
+        }
+
+        /**
+         * Get emails from ids
+         * @param {Array} id 
+         */
+        static async getEmailsFromIds({ id }) {
+            try {
+                // Step 1: Check if user with the email exists
+                const users = await User.findAll({
+                    attributes: ["email"],
+                    where: {
+                        id: {
+                            [Op.in]: [id]
+                        }
+                    }
+                })
+
+                // Return false as user doesn't exist
+                return users
+            } catch (err) {
+                // Throw error when there is error
+                throw new InternalServer("unable to get emails from ids")
             }
         }
 

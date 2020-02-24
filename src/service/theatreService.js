@@ -49,7 +49,7 @@ class TheatreService {
 
         // Step 4: Return the newly created theatre
         return {
-            theatre:{
+            theatre: {
                 id: theatre.id,
                 name: nameV
             },
@@ -64,6 +64,9 @@ class TheatreService {
     async search({ search }) {
         // Step 1: Validate and format
         const searchV = validationHelper.simpleStringCheck(search)
+        if (searchV === false) {
+            throw new BadRequest("invalid data")
+        }
 
         // Step 2: Get the result
         const theatres = await this.TheatreModel.searchTheatreByName({ name: searchV, limit: 5 })

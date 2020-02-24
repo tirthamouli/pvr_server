@@ -5,6 +5,9 @@
 
 const { Model, DataTypes, Op } = require("sequelize")
 
+// Exceptions
+const InternalServer = require("../exception/internalServerException")
+
 /**
  * 
  * @param {Object} sequelize 
@@ -46,6 +49,46 @@ function init({ sequelize, Theatre }) {
                 return movies
             } catch (err) {
                 throw new InternalServer("unable to search movie by name")
+            }
+        }
+
+        /**
+         * Get movie by id
+         * @param {String} movieId 
+         */
+        static async getMovieById({ movieId }) {
+            try {
+                // Step 1: Find the movie
+                const movie = await Movie.findByPk(movieId)
+
+                // Step 2: Return the movie
+                return movie
+            } catch (err) {
+                // Throw error if any
+                throw new InternalServer("unable to get movie by id")
+            }
+        }
+
+        /**
+         * Get users from movie
+         * @param {String} movieId 
+         */
+        static async getUsersForMovie({ movieId }) {
+            try {
+                // Step 1: Run raw query
+                const emails = await sequelize.query(
+                    "SELECT DISTINCT u.email as email FROM user u INNER JOIN city c ON u.cityId = c.id INNER JOIN theatre t ON (t.cityId = c.id) INNER JOIN `show` s ON (s.TheatreId = t.id AND s.startsAt <= CURDATE() AND s.endsAt >= CURDATE()) INNER JOIN movie m ON (m.id = s.MovieId AND m.id = :movieId)",
+                    {
+                        replacements: { movieId: movieId },
+                        type: QueryTypes.SELECT
+                    }
+                );
+
+                // Step 2: Return result
+                return emails
+            } catch (err) {
+                // Throw in case of errors
+                throw new InternalServer("unable to get email for movies")
             }
         }
 

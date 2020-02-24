@@ -33,6 +33,13 @@ router.get('/search', verifyToken,
 )
 
 /**
+ * Send mail route
+ */
+router.post('/mail', verifyToken,
+    userController.sendMail.bind(userController)
+)
+
+/**
  * Search city route
  */
 router.get('/city/search',

@@ -5,6 +5,9 @@
 
 const { Model, DataTypes, Op } = require("sequelize")
 
+// Exceptions
+const InternalServer = require("../exception/internalServerException")
+
 /**
  * Initializes the model
  * @param {Object} sequelize 
@@ -21,20 +24,25 @@ function init({ sequelize }) {
          * @param {Number} offset
          */
         static async searchCityByName({ name, limit = 5 }) {
-            // Step 1: Get all the cities with limit and offset
-            const cities = await City.findAll({
-                attributes: ['id', 'name'],
-                limit: limit,
-                order: [['name']],
-                where: {
-                    name: {
-                        [Op.like]: `${name}%`
+            try {
+                // Step 1: Get all the cities with limit and offset
+                const cities = await City.findAll({
+                    attributes: ['id', 'name'],
+                    limit: limit,
+                    order: [['name']],
+                    where: {
+                        name: {
+                            [Op.like]: `${name}%`
+                        }
                     }
-                }
-            })
+                })
 
-            // Step 2: Return the cities
-            return cities
+                // Step 2: Return the cities
+                return cities
+            } catch (err) {
+                throw new InternalServer("not able to search city by name")
+            }
+
         }
 
         /**
@@ -42,16 +50,20 @@ function init({ sequelize }) {
          * @param {String} cityId 
          */
         static async checkIfCityExists({ cityId }) {
-            // Step 1: Find using city id
-            const city = await City.findByPk(cityId)
+            try {
+                // Step 1: Find using city id
+                const city = await City.findByPk(cityId)
 
-            // Step 2: Check if city exists
-            if (city !== null) {
-                return city.name
+                // Step 2: Check if city exists
+                if (city !== null) {
+                    return city.name
+                }
+
+                // Step 3: Return false because city doesn't exists
+                return false
+            } catch (err) {
+                throw new InternalServer("not able to check if city exists")
             }
-
-            // Step 3: Return false because city doesn't exists
-            return false
         }
     }
 

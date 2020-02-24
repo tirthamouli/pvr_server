@@ -5,6 +5,9 @@
 
 const { Model, DataTypes, Op } = require("sequelize")
 
+// Exceptions
+const InternalServer = require("../exception/internalServerException")
+
 /**
  * 
  * @param {Object} sequelize 
@@ -28,20 +31,25 @@ function init({ sequelize, City }) {
          * @param {String} name 
          */
         static async searchTheatreByName({ name, limit }) {
-            // Step 1: Get all the theatres with limit
-            const theatres = await Theatre.findAll({
-                attributes: ['id', 'name'],
-                limit: limit,
-                order: [['name']],
-                where: {
-                    name: {
-                        [Op.like]: `${name}%`
+            try {
+                // Step 1: Get all the theatres with limit
+                const theatres = await Theatre.findAll({
+                    attributes: ['id', 'name'],
+                    limit: limit,
+                    order: [['name']],
+                    where: {
+                        name: {
+                            [Op.like]: `${name}%`
+                        }
                     }
-                }
-            })
+                })
 
-            // Step 2: Return the theatres
-            return theatres
+                // Step 2: Return the theatres
+                return theatres
+            } catch (err) {
+                throw new InternalServer("not able to search user by name")
+            }
+
         }
 
         /**
@@ -49,23 +57,28 @@ function init({ sequelize, City }) {
          * @param {String} theatreId 
          */
         static async checkIfTheatresExists(theatres) {
-            // Step 1: Find using theatre id
-            const theatreRes = await Theatre.findAll({
-                attributes: ['id'],
-                where: {
-                    id: {
-                        [Op.in]: theatres
+            try {
+                // Step 1: Find using theatre id
+                const theatreRes = await Theatre.findAll({
+                    attributes: ['id'],
+                    where: {
+                        id: {
+                            [Op.in]: theatres
+                        }
                     }
-                }
-            })
+                })
 
-            // Step 2: Check if theatre exists
-            if (theatreRes.length === theatres.length) {
-                return "THEATRE_EXISTS"
+                // Step 2: Check if theatre exists
+                if (theatreRes.length === theatres.length) {
+                    return "THEATRE_EXISTS"
+                }
+
+                // Step 3: Return false because theatre doesn't exist
+                return false
+            } catch (err) {
+                throw new InternalServer("not able to check if user exists")
             }
 
-            // Step 3: Return false because theatre doesn't exist
-            return false
         }
     }
 
@@ -102,6 +115,7 @@ function init({ sequelize, City }) {
 
     // Step 2: Defining associations
     City.hasMany(Theatre, { foreignKey: 'cityId' })
+    Theatre.belongsTo(City, { foreignKey: 'cityId' })
 
     // Step 3: Return the class
     return Theatre

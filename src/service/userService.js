@@ -9,6 +9,9 @@ const validationHelper = require("../helper/validationHelper")
 // Exception
 const BadRequest = require("../exception/badRequestException")
 
+// Email library
+const sendMail = require("../lib/mailLibrary")
+
 /**
  * User service layer
  */
@@ -77,6 +80,9 @@ class UserService {
     async search({ search }) {
         // Step 1: Validate and format
         const searchV = validationHelper.simpleStringCheck(search)
+        if (searchV === false) {
+            throw new BadRequest("invalid data")
+        }
 
         // Step 2: Get the result
         const users = await this.UserModel.searchUserByName({ search: searchV, limit: 10 })
@@ -105,6 +111,9 @@ class UserService {
     async searchCity({ search }) {
         // Step 1: Validate and format
         const searchV = validationHelper.simpleStringCheck(search)
+        if (searchV === false) {
+            throw new BadRequest("invalid data")
+        }
 
         // Step 2: Get the result
         const cities = await this.UserModel.searchCityByName({ name: searchV, limit: 5 })
@@ -120,6 +129,41 @@ class UserService {
         // Step 4: Return the res
         return {
             cities: cityRes
+        }
+    }
+
+    /**
+     * Send mail to the user
+     * @param {String} id
+     * @param {String} title
+     * @param {String} body
+     */
+    async sendMail({ id, title, body }) {
+        // Step 1: Validate data
+        const titleV = validationHelper.movieOrTheatreName(title)
+        const bodyV = validationHelper.description(body)
+        if (!titleV || !bodyV || !id.constructor.name !== 'Array') {
+            throw new BadRequest("invalid data")
+        }
+
+        // Step 2: Get emails from ids
+        const users = await this.UserModel.getEmailsFromIds({ id: id })
+
+        // Step 3: Get email array
+        const emailArr = users.map(user => {
+            return user.email
+        })
+
+        // Step 4: Send the mail
+        await sendMail({
+            to: emailArr,
+            subject: titleV,
+            text: body
+        })
+
+        // Step 5: Send response
+        return {
+            message: "mail successfully sent"
         }
     }
 }

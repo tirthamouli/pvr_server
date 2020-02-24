@@ -32,4 +32,11 @@ router.get('/search',
     movieController.search.bind(movieController)
 )
 
+/**
+ * Send mail route
+ */
+router.post('/mail',
+    movieController.sendMail.bind(movieController)
+)
+
 module.exports = router

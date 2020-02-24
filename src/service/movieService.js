@@ -9,6 +9,9 @@ const validationHelper = require("../helper/validationHelper")
 // Exception
 const BadRequest = require("../exception/badRequestException")
 
+// Email library
+const sendMail = require("../lib/mailLibrary")
+
 /**
  * Verifying and mapping shows
  * @param {Array} shows
@@ -111,6 +114,9 @@ class MovieService {
     async search({ search }) {
         // Step 1: Validate and format
         const searchV = validationHelper.simpleStringCheck(search)
+        if (searchV === false) {
+            throw new BadRequest("invalid data")
+        }
 
         // Step 2: Get the result
         const movies = await this.MovieModel.searchMovieByName({ name: searchV, limit: 15 })
@@ -127,6 +133,46 @@ class MovieService {
         // Step 4: Return the res
         return {
             movies: movieRes
+        }
+    }
+
+    /**
+     * Send mail notifying about movie
+     * @param {String} movieId 
+     */
+    async sendMail({ movieId }) {
+        // Step 1: Get movie name and description from id and check if it exists
+        const movie = await this.MovieModel.getMovieById({ movieId })
+        if (movie === null) {
+            throw new BadRequest("invalid data")
+        }
+
+        // Step 2: Get all the user email
+        const users = await this.MovieModel.getUsersForMovie({ movieId })
+
+        // Step 3: Generate the email array
+        const emailArr = users.map(user => {
+            return user.email
+        })
+
+        // Step 4: Generate some random title, incase of a real project we should create a template for the message
+        const title = `${movie.name} now in your city!!`
+        const body =
+            `${movie.name} is now in your city.
+            Want to know about '${movie.description}'?
+            PVRCinema in your city is now plaing ${movie.name}.
+            Watch today!!`
+
+        // Step 5: Send the mail
+        await sendMail({
+            to: emailArr,
+            subject: title,
+            text: body
+        })
+
+        // Step 6: Return the res
+        return {
+            message: 'Email successfully sent'
         }
     }
 }
