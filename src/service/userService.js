@@ -76,16 +76,18 @@ class UserService {
     /**
      * Search for user by name
      * @param {String} search 
+     * @param {Number} page 
      */
-    async search({ search }) {
+    async search({ search, page = 0 }) {
         // Step 1: Validate and format
         const searchV = validationHelper.simpleStringCheck(search)
-        if (searchV === false) {
+        const pageV = validationHelper.intCheck(page)
+        if (searchV === false || pageV === false) {
             throw new BadRequest("invalid data")
         }
 
         // Step 2: Get the result
-        const users = await this.UserModel.searchUserByName({ search: searchV, limit: 10 })
+        const users = await this.UserModel.searchUserByName({ search: searchV, limit: 10, offset: 10 * page })
 
         // Step 3: Format response
         const userRes = users.map(user => {
@@ -142,7 +144,6 @@ class UserService {
         // Step 1: Validate data
         const titleV = validationHelper.movieOrTheatreName(title)
         const bodyV = validationHelper.description(body)
-        console.log(titleV, bodyV, id)
         if (!titleV || !bodyV || id.constructor.name !== 'Array') {
             throw new BadRequest("invalid data")
         }

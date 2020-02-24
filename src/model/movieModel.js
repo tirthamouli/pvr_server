@@ -31,12 +31,13 @@ function init({ sequelize, Theatre }) {
          * @param {String} name 
          * @param {Number} limit 
          */
-        static async searchMovieByName({ name, limit = 15 }) {
+        static async searchMovieByName({ name, limit = 15, offset = 0 }) {
             try {
                 // Step 1: Get all the cities with limit and offset
                 const movies = await Movie.findAll({
                     attributes: ['id', 'name', 'description'],
                     limit: limit,
+                    offset: offset,
                     order: [['name']],
                     where: {
                         name: {
@@ -77,7 +78,7 @@ function init({ sequelize, Theatre }) {
             try {
                 // Step 1: Run raw query
                 const emails = await sequelize.query(
-                    "SELECT DISTINCT u.email as email FROM user u INNER JOIN city c ON u.cityId = c.id INNER JOIN theatre t ON (t.cityId = c.id) INNER JOIN `show` s ON (s.TheatreId = t.id AND s.startsAt <= CURDATE() AND s.endsAt >= CURDATE()) INNER JOIN movie m ON (m.id = s.MovieId AND m.id = :movieId)",
+                    "SELECT DISTINCT u.email as email FROM user u LEFT JOIN auth a ON (a.userId = u.id) INNER JOIN city c ON (u.cityId = c.id) INNER JOIN theatre t ON (t.cityId = c.id) INNER JOIN `show` s ON (s.TheatreId = t.id AND s.startsAt <= CURDATE() AND s.endsAt >= CURDATE()) INNER JOIN movie m ON (m.id = s.MovieId AND m.id = :movieId) WHERE a.id is NULL",
                     {
                         replacements: { movieId: movieId },
                         type: QueryTypes.SELECT

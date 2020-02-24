@@ -110,16 +110,18 @@ class MovieService {
     /**
      * Search a movie by name
      * @param {String} search 
+     * @param {Number} page 
      */
-    async search({ search }) {
+    async search({ search, page = 0 }) {
         // Step 1: Validate and format
         const searchV = validationHelper.simpleStringCheck(search)
-        if (searchV === false) {
+        const pageV = validationHelper.intCheck(page)
+        if (searchV === false || page === false) {
             throw new BadRequest("invalid data")
         }
 
         // Step 2: Get the result
-        const movies = await this.MovieModel.searchMovieByName({ name: searchV, limit: 15 })
+        const movies = await this.MovieModel.searchMovieByName({ name: searchV, limit: 15, offset: pageV * 15 })
 
         // Step 3: Format response
         const movieRes = movies.map(movie => {

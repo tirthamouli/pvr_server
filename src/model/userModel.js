@@ -57,12 +57,13 @@ function init({ sequelize, City }) {
          * Search for users
          * @param {String} search 
          */
-        static async searchUserByName({ search, limit }) {
+        static async searchUserByName({ search, limit, offset }) {
             try {
                 // Step 1: Search user
                 const users = await User.findAll({
                     attributes: ['id', 'firstName', 'lastName', 'email'],
                     limit: limit,
+                    offset: offset,
                     order: [['name']],
                     include: [{
                         model: City,

@@ -40,6 +40,13 @@ module.exports = {
         return typeof value === 'string'
     },
     /**
+     * Check weater number is int
+     * @param {Number} value 
+     */
+    intCheck(value) {
+        return isNaN(value) ? false : parseInt(value)
+    },
+    /**
      * Sanitize and format a name
      * @param {String} value
      */
