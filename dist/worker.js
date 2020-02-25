@@ -15,7 +15,7 @@
         error: false,
         value: JSON.parse(str)
       });
-    } catch {
+    } catch (err) {
       return self.postMessage({
         error: true,
         value: "DATA_ERROR"
@@ -33,7 +33,7 @@
         error: false,
         value: JSON.stringify(obj)
       });
-    } catch {
+    } catch (err) {
       return self.postMessage({
         error: true,
         value: "DATA_ERROR"
