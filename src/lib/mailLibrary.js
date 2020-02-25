@@ -4,6 +4,7 @@
 
 const nodemailer = require("nodemailer")
 const BadRequest = require("../exception/badRequestException")
+const InternalServer = require("../exception/internalServerException")
 
 /**
  * A common transporter object which will be used to send mail
@@ -56,7 +57,7 @@ module.exports = ({ to, subject, text = "", html = "" }) => {
         transporter.sendMail(mailOptions, function (error, info) {
             // When there is error
             if (error) {
-                return reject(error)
+                return reject(new InternalServer("error while sending mail"))
             }
 
             // Default when there is no error
