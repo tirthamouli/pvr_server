@@ -4,102 +4,102 @@
  */
 
 // Require exceptions
-const BadRequest = require("../exception/badRequestException")
+const BadRequest = require('../exception/badRequestException')
 
 // Require helpers
-const handleError = require("../helper/handleError")
-const { bulkCheckHasOwnProperty } = require("../helper/objectHelper")
+const handleError = require('../helper/handleError')
+const { bulkCheckHasOwnProperty } = require('../helper/objectHelper')
 
 /**
  * Auth Controller has methods for handling auth resquests
  */
 class AuthController {
-    /**
+  /**
      * Dependency injections
-     * @param {AuthService} authService - An AuthService object 
+     * @param {AuthService} authService - An AuthService object
      */
-    constructor({ authService }) {
-        this.authService = authService
-    }
+  constructor ({ authService }) {
+    this.authService = authService
+  }
 
-    /**
+  /**
      * Login controller
-     * @param {Object} req 
-     * @param {Object} res 
+     * @param {Object} req
+     * @param {Object} res
      */
-    async login(req, res) {
-        // Step 1: Default response
-        let response = {}
+  async login (req, res) {
+    // Step 1: Default response
+    let response = {}
 
-        // Step 2: Get the response
-        try {
-            // Step 2.1: Check if we have the correct request format
-            if (!bulkCheckHasOwnProperty({
-                obj: req.body,
-                propArray: ["username", "password"]
-            })) {
-                throw new BadRequest("bad request")
-            }
+    // Step 2: Get the response
+    try {
+      // Step 2.1: Check if we have the correct request format
+      if (!bulkCheckHasOwnProperty({
+        obj: req.body,
+        propArray: ['username', 'password']
+      })) {
+        throw new BadRequest('bad request')
+      }
 
-            // Step 2.2: Pass the request to auth service
-            response = await this.authService.login(req.body)
+      // Step 2.2: Pass the request to auth service
+      response = await this.authService.login(req.body)
 
-            // Step 2.3: Set the status code
-            response.code = 200
-            res.status(200)
-        } catch (error) {
-            // Step 2.1: Handle the error in case of error
-            return handleError(error, res)
-        }
-
-        // Step 3: Send the response
-        res.send(response)
+      // Step 2.3: Set the status code
+      response.code = 200
+      res.status(200)
+    } catch (error) {
+      // Step 2.1: Handle the error in case of error
+      return handleError(error, res)
     }
 
-    /**
+    // Step 3: Send the response
+    res.send(response)
+  }
+
+  /**
      * Register controller
-     * @param {Object} req 
-     * @param {Object} res 
+     * @param {Object} req
+     * @param {Object} res
      */
-    async register(req, res) {
-        // Step 1: Default response
-        let response = {}
+  async register (req, res) {
+    // Step 1: Default response
+    let response = {}
 
-        // Step 2: Get the response
-        try {
-            // Step 2.1: Check if we have the correct request format
-            if (!bulkCheckHasOwnProperty({
-                obj: req.body,
-                propArray: ["firstName", "lastName", "email", "username", "password", "repeatPassword", "cityId"]
-            })) {
-                throw new BadRequest("bad request")
-            }
+    // Step 2: Get the response
+    try {
+      // Step 2.1: Check if we have the correct request format
+      if (!bulkCheckHasOwnProperty({
+        obj: req.body,
+        propArray: ['firstName', 'lastName', 'email', 'username', 'password', 'repeatPassword', 'cityId']
+      })) {
+        throw new BadRequest('bad request')
+      }
 
-            // Step 2.2: Pass the request to auth service
-            response = await this.authService.register(req.body)
+      // Step 2.2: Pass the request to auth service
+      response = await this.authService.register(req.body)
 
-            // Step 2.3: Set the status code
-            response.code = 200
-            res.status(200)
-        } catch (error) {
-            // Step 2.1: Handle the error in case of error
-            return handleError(error, res)
-        }
-
-        // Step 3: Send the response
-        res.send(response)
+      // Step 2.3: Set the status code
+      response.code = 200
+      res.status(200)
+    } catch (error) {
+      // Step 2.1: Handle the error in case of error
+      return handleError(error, res)
     }
 
-    /**
+    // Step 3: Send the response
+    res.send(response)
+  }
+
+  /**
      * Verification controller
-     * @param {Object} req 
-     * @param {Object} res 
+     * @param {Object} req
+     * @param {Object} res
      */
-    async verify(req, res) {
-        // Step 1: Since verification is done by middleware, we can directly access the user
-        res.status(200)
-        res.json({ ...req.user, code: 200 })
-    }
+  async verify (req, res) {
+    // Step 1: Since verification is done by middleware, we can directly access the user
+    res.status(200)
+    res.json({ ...req.user, code: 200 })
+  }
 }
 
 module.exports = AuthController
