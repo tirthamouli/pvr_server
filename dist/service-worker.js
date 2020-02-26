@@ -23,8 +23,5 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 // For live route caching
-workbox.routing.registerRoute(
-  /^/,
-  new workbox.strategies.StaleWhileRevalidate()
-);
+workbox.routing.registerRoute(/^/, new workbox.strategies.NetworkFirst());
 
